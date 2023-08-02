@@ -8,4 +8,8 @@ class AppColors {
   static const averageColor = Color(0xFFD9D9D9);
   static const summaryColor = Color(0XFFB2D9DC);
   static const waste = Color(0xFFFFFFFF);
+  static const frontbutton = Color(0xFF67CAEF);
+  static const doctordev = Color(0XFF827717);
+  static const gbutton = Color(0XFFA4CBD8);
+  static const week1text = Color(0XFFD9D9D9);
 }

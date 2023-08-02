@@ -20,22 +20,22 @@ class HomeScreen extends StatelessWidget {
           Positioned(
             top: 30.0,
             child: Container(
-              padding: EdgeInsets.all(19.0),
+              padding: EdgeInsets.all(14.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
                 color: AppColors.primaryColor,
               ),
               child: Text(
-                'MASTER SLEEP DIARY',
+                'ZENBEV SLEEP CALCULATOR',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 23,
                 ),
               ),
             ),
           ),
           Positioned(
             top: 120.0,
-            left: 40,
+            left: 28,
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,13 +43,13 @@ class HomeScreen extends StatelessWidget {
                   Text(
                     Strings.Modernize,
                     style: TextStyle(),
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 20), // Add spacing between the text and circular containers
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircularContainerWithNumber(number: '1', text: Strings.tap1),
+                      CircularContainerWithNumber(number: '1', text: "Tap the button to register a\n new week."),
                       SizedBox(height: 10), // Add spacing between the circular containers
                       CircularContainerWithNumber(number: '2', text: Strings.tap2),
                       SizedBox(height: 10),
@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 12), // Add spacing between the new button and the row of new buttons
+                  SizedBox(height: 10,), // Add spacing between the new button and the row of new buttons
                   Row(
                     children: [
                       ElevatedButton(
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
                       ),
-                      SizedBox(width: 16), // Add spacing between New Button 2 and New Button 3
+                      SizedBox(width: 14), // Add spacing between New Button 2 and New Button 3
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(

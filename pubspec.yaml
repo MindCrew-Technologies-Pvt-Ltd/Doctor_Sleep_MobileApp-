@@ -30,7 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.17.0
+  sqflite: ^2.0.0
+  path_provider: ^2.0.0
+
+
 
 
 
@@ -57,11 +60,13 @@ flutter:
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
-#uses-material-design: true
+  uses-material-design: true
 
 #To add assets to your application, add an assets section, like this:
-#assets:
-  #- assets/images/doctorsleepfront.jpeg
+  assets:
+    - assets/images/doctorsleepfront.jpeg
+    - assets/images/zenbev.png
+    - assets/images/biosential.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

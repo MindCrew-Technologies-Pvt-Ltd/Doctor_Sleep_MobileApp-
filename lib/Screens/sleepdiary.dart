@@ -1,274 +1,8 @@
-// import 'package:flutter/material.dart';
-//
-// import '../constants/color.dart';
-// import '../constants/string.dart';
-//
-// class SleepDiary extends StatefulWidget {
-//   @override
-//   _SleepDiaryState createState() => _SleepDiaryState();
-// }
-//
-// class _SleepDiaryState extends State<SleepDiary> {
-//   @override
-//   Widget build(BuildContext context) {
-//     List<DataColumn> customColumns =[
-//       DataColumn(label: Text('28 Jul.')),
-//       DataColumn(label: Text('28 Jul.')),
-//       DataColumn(label: Text('28 Jul.')),
-//       DataColumn(label: Text('28 Jul.')),
-//       DataColumn(label: Text('28 Jul.')),
-//       DataColumn(label: Text('28 Jul.')),
-//       DataColumn(label: Text('28 Jul.')),
-//     ];
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Sleep Diary App Bar'),
-//         backgroundColor: AppColors.primaryColor,
-//         centerTitle: true, // Add any other app bar customization as needed
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: EdgeInsets.all(12.0),
-//           child: Column(
-//             children: [
-//               Container(
-//                 child: Row(
-//                   crossAxisAlignment: CrossAxisAlignment.center,
-//                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                   children: [
-//                     Icon(Icons.info_outlined, size: 20),
-//                     // Icon inside the container
-//                     Text(
-//                     Strings.sleepdiarytime,
-//                       style: TextStyle(
-//                         fontSize: 15,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 padding: const EdgeInsets.all(9.0),
-//                 decoration: BoxDecoration(
-//                   border: Border.all(color: Colors.black),
-//                 ),
-//               ),
-//               SizedBox(height: 24), // Add spacing between the two rows
-//               Row(
-//                 children: [
-//                   IconButton(
-//                     icon: Icon(Icons.add_circle_outline_outlined, size: 40),
-//                     onPressed: () {
-//                       // Add your icon's onPressed logic here
-//                       // This function will be executed when the icon is pressed.
-//                     },
-//                   ),
-//                   SizedBox(width: 15),
-//                   Text(
-//                    Strings.register,
-//                     style: TextStyle(
-//                       fontSize: 18,
-//                     ),
-//                   ),
-//                   SizedBox(width: 20),
-//                   // Add spacing between the "Register" text and the button
-//                   ElevatedButton(
-//                     onPressed: () {
-//                       // Add your button's onPressed logic here
-//                     },
-//                     child: Text(
-//                       'Save Data',
-//                       style: TextStyle(fontSize: 10),
-//                     ),
-//                     style: ButtonStyle(
-//                       backgroundColor:
-//                       MaterialStateProperty.all<Color>(AppColors.accentColor), // Replace with your desired color
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(height: 2), // Add spacing between the previous content and the scrollable container
-//               _buildSleepDataContainer(),
-//               SizedBox(height: 20), // Add spacing between the scrollable container and the next content
-//             ],
-//           ),
-//         ),
-//       ),
-//       // Align to position the "Average Values" container at the bottom center
-//       floatingActionButton: Align(
-//         alignment: Alignment.bottomCenter,
-//         child: Container(
-//           margin: EdgeInsets.only(bottom: 30), // Adjust the margin as per your requirement
-//           padding: EdgeInsets.all(5),
-//           color: AppColors.averageColor, // Replace with your desired color
-//           child: Text(
-//             'Average Values',
-//             style: TextStyle(
-//               fontSize: 18,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//   Widget _buildSleepDataContainer() {
-//     return Container(
-//       height: 350, // Set the desired height of the container
-//       child: Column(
-//         children: [
-//           Container(
-//              padding: EdgeInsets.only(left:30,right:30), // Add padding to the text
-//             decoration: BoxDecoration(
-//               border: Border.all(color: Colors.black, width: 1), // Add a border
-//               color: AppColors.primaryColor // Set the color inside the border
-//             ),
-//             child: Text(
-//               'Week 1',
-//               style: TextStyle(
-//                 fontSize: 18,
-//                 // fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: ListView(
-//               scrollDirection: Axis.horizontal,
-//               children: [
-//                 DataTable(
-//                   columnSpacing: 10,
-//
-//             columns: [
-//               buildCustomDataColumn('28.Jul.', AppColors.buttonColor),
-//               buildCustomDataColumn('29.Jul.', AppColors.buttonColor),
-//               buildCustomDataColumn('30.Jul.', AppColors.buttonColor),
-//               buildCustomDataColumn('31.Jul.', AppColors.buttonColor),
-//               buildCustomDataColumn('01.Jul.', AppColors.buttonColor),
-//               buildCustomDataColumn('02.Jul.', AppColors.buttonColor),
-//               buildCustomDataColumn('03.Jul.', AppColors.buttonColor),
-//         ],
-//
-//         rows: [
-//           DataRow(cells: [
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//           ],),
-//           DataRow(cells: [
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//           ]),
-//           DataRow(cells: [
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//           ]),
-//           DataRow(cells: [
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//           ]),
-//           DataRow(cells: [
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//           ]),
-//           DataRow(cells: [
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//             DataCell(_buildRoundedTextField('')),
-//           ]),
-//         ],
-//       ),
-//
-//                   // dividerThickness: 0.0, //
-//                   // columnSpacing: 2, // Add spacing between columns
-//                   // columns: [
-//                   //   DataColumn(label: Text('')), // Empty cell at row 1, column 1
-//                   //   ...List.generate(7, (index) => DataColumn(label: Text('Col $index'))),
-//                   // ],
-//                   // rows: List.generate(7, (index) {
-//                   //   return DataRow(
-//                   //     cells: [
-//                   //       DataCell(Text('Row $index')),
-//                   //       ...List.generate(7, (colIndex) => DataCell(Text('Data $index-$colIndex'))),
-//                   //     ],
-//                   //   );
-//                   // }),
-//       ]
-//                 ),
-//           )
-//               ],
-//             ),
-//           );
-//
-//   }
-//   DataColumn buildCustomDataColumn(String label, Color backgroundColor) {
-//     return DataColumn(
-//       label: Container(
-//         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
-//         decoration: BoxDecoration(
-//           color: backgroundColor,
-//           border: Border.all(color: AppColors.buttonColor, width: 1.0),
-//         ),
-//         child: Text(
-//           label,
-//           style: TextStyle(
-//             fontSize: 16,
-//             color: Colors.black, // You can customize the text color here
-//             // fontWeight: FontWeight.bold,
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-//
-//
-//   Widget _buildRoundedTextField(String initialValue) {
-//     return Container(
-//       padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(8.0),
-//         border: Border.all(color: Colors.grey),
-//       ),
-//       child: TextField(
-//         controller: TextEditingController(text: initialValue),
-//         decoration: InputDecoration(
-//           border: InputBorder.none,
-//         ),
-//       ),
-//     );
-//   }
-// }
-//
-//
 import 'package:flutter/material.dart';
-
 import '../constants/color.dart';
 import '../constants/string.dart';
+
+
 
 class SleepDiary extends StatefulWidget {
   @override
@@ -276,11 +10,35 @@ class SleepDiary extends StatefulWidget {
 }
 
 class _SleepDiaryState extends State<SleepDiary> {
+
+  int numberOfContainers = 0; // Set the initial number of sleep data containers you want to display
+
+  List<String> getColumnHeaders(int weekNumber) {
+    DateTime currentDate = DateTime.now();
+
+    // Calculate the start date of the current week
+    DateTime weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+
+    // Adjust the start date based on the week number
+    weekStartDate = weekStartDate.add(Duration(days: (weekNumber - 1) * 7));
+
+    List<String> headers = [];
+
+    // Add the dates for the target week to the list as headers
+    for (int i = 0; i < 7; i++) {
+      DateTime date = weekStartDate.add(Duration(days: i));
+      String header = '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.';
+      headers.add(header);
+    }
+
+    return headers;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sleep Diary App Bar'),
+        title: Text('ENTER SLEEP DIARY HERE'),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -313,10 +71,7 @@ class _SleepDiaryState extends State<SleepDiary> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.add_circle_outline_outlined, size: 40),
-                    onPressed: () {
-                      // Add your icon's onPressed logic here
-                      // This function will be executed when the icon is pressed.
-                    },
+                    onPressed: _addNewContainer,
                   ),
                   SizedBox(width: 15),
                   Text(
@@ -335,26 +90,43 @@ class _SleepDiaryState extends State<SleepDiary> {
                       style: TextStyle(fontSize: 10),
                     ),
                     style: ButtonStyle(
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(AppColors.accentColor),
+                      backgroundColor: MaterialStateProperty.all<Color>(AppColors.accentColor),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 2),
-              _buildSleepDataContainer(),
+              Column(
+                children: List.generate(
+                  numberOfContainers,
+                      (index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Card(
+                      elevation: 4,
+                      child: _buildSleepDataContainer(index + 1),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 20),
             ],
           ),
         ),
       ),
-
     );
   }
 
-  Widget _buildSleepDataContainer() {
+  void _addNewContainer() {
+    if (numberOfContainers < 30) {
+      setState(() {
+        numberOfContainers++; // Increment the number of sleep data containers
+      });
+    }
+  }
+
+  Widget _buildSleepDataContainer(int weekNumber) {
     return Container(
-      height: 350,
+      height: 422,
       child: Column(
         children: [
           Container(
@@ -364,7 +136,7 @@ class _SleepDiaryState extends State<SleepDiary> {
               color: AppColors.primaryColor,
             ),
             child: Text(
-              'Week 1',
+              'Week $weekNumber',
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -375,22 +147,58 @@ class _SleepDiaryState extends State<SleepDiary> {
               scrollDirection: Axis.horizontal,
               child: Padding(
                 padding: const EdgeInsets.only(left: 1.0),
-                child: buildSleepDataTable(),
+                child: buildSleepDataTable(weekNumber),
               ),
             ),
           ),
-          SizedBox(height: 20), // Add spacing between the DataTable and the text container
+          SizedBox(height: 1), // Add spacing between the DataTable and the text container
           Align(
             alignment: Alignment.center,
             child: Container(
               padding: EdgeInsets.all(8),
               color: AppColors.averageColor, // Replace with your desired color
               child: Text(
-                'Average Values',
+                'AVERAGE VALUES',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.black, // Replace with your desired text color
                 ),
+              ),
+            ),
+          ),
+          // SizedBox(height:20),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 1),
+            child: SingleChildScrollView( // New SingleChildScrollView for the row of 6 containers
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  buildAverageContainer('BT'),
+                  buildAverageContainer('SL'),
+                  buildAverageContainer('AN'),
+                  buildAverageContainer('AL'),
+                  buildAverageContainer('WT'),
+                  buildAverageContainer('ZS'),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 1), // Add some spacing after the existing row of containers
+
+          // New row of 6 containers
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 1),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  buildAverageContainer('-'),
+                  buildAverageContainer('-'),
+                  buildAverageContainer('-'),
+                  buildAverageContainer('-'),
+                  buildAverageContainer('-'),
+                  buildAverageContainer('-'),
+                ],
               ),
             ),
           ),
@@ -399,85 +207,146 @@ class _SleepDiaryState extends State<SleepDiary> {
     );
   }
 
+  Widget buildAverageContainer(String text) {
+    return Container(
+      width: 36,
+      height: 25,
+      margin: EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: AppColors.buttonColor, // Replace with your desired container color
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 14, color: Colors.black),
+        ),
+      ),
+    );
+  }
 
-  Widget buildSleepDataTable() {
+  Widget buildSleepDataTable(int weekNumber) {
+    List<String> columnHeaders = getColumnHeaders(weekNumber);
 
     return DataTable(
       dataRowHeight: 35.0,
       columnSpacing: 10,
+      horizontalMargin: 1,
+      dividerThickness: 0.0,
       columns: [
         buildCustomDataColumn('', AppColors.waste),
-        buildCustomDataColumn('28.Jul.', AppColors.buttonColor),
-        buildCustomDataColumn('29.Jul.', AppColors.buttonColor),
-        buildCustomDataColumn('30.Jul.', AppColors.buttonColor),
-        buildCustomDataColumn('31.Jul.', AppColors.buttonColor),
-        buildCustomDataColumn('01.Jul.', AppColors.buttonColor),
-        buildCustomDataColumn('02.Jul.', AppColors.buttonColor),
-        buildCustomDataColumn('03.Jul.', AppColors.buttonColor),
+        for (String header in columnHeaders)
+          buildCustomDataColumn(header, AppColors.buttonColor),
       ],
       rows: [
         DataRow(cells: [
-          DataCell(_buildRoundedTextField('Bed Time ')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
+          DataCell(Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 55),
+            decoration: BoxDecoration(
+              color: AppColors.week1text,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+            child: Text(
+              'Bed Time',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          )),
+          for (int i = 0; i < 7; i++)
+            DataCell(_buildRoundedTextField('')),
         ]),
         DataRow(cells: [
-          DataCell(_buildRoundedTextField('Sleep Latency')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
+          DataCell(Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 43),
+            decoration: BoxDecoration(
+              color: AppColors.week1text,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+            child: Text(
+              'Sleep Latency',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          )),
+          for (int i = 0; i < 7; i++)
+            DataCell(_buildRoundedTextField('')),
         ]),
         DataRow(cells: [
-          DataCell(_buildRoundedTextField('Number of Awakenings')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
+          DataCell(Container(
+            padding: EdgeInsets.symmetric(vertical: 1, horizontal: 49),
+            decoration: BoxDecoration(
+              color: AppColors.week1text,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+            child: Text(
+              'Number of\nAwakenings',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          )),
+          for (int i = 0; i < 7; i++)
+            DataCell(_buildRoundedTextField('')),
         ]),
         DataRow(cells: [
-          DataCell(_buildRoundedTextField('Average Length of Awakening')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
+          DataCell(Container(
+            padding: EdgeInsets.symmetric(vertical: 1, horizontal: 28),
+            decoration: BoxDecoration(
+              color: AppColors.week1text,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+            child: Text(
+              '  Average Length of\n        Awakening',
+              style: TextStyle(
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          )),
+          for (int i = 0; i < 7; i++)
+            DataCell(_buildRoundedTextField('')),
         ]),
         DataRow(cells: [
-          DataCell(_buildRoundedTextField('Wake Time')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
+          DataCell(Container(
+            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 50),
+            decoration: BoxDecoration(
+              color: AppColors.week1text,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+            child: Text(
+              'Wake Time',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
+            ),
+          )),
+          for (int i = 0; i < 7; i++)
+            DataCell(_buildRoundedTextField('')),
         ]),
         DataRow(cells: [
-          DataCell(_buildRoundedTextField('Scoops of Zenbev')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
-          DataCell(_buildRoundedTextField('')),
+          DataCell(Container(
+            padding: EdgeInsets.symmetric(vertical: 6, horizontal: 29),
+            decoration: BoxDecoration(
+              color: AppColors.week1text,
+              borderRadius: BorderRadius.circular(2.0),
+            ),
+            child: Text(
+              'Scoops of Zenbev',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black,
+              ),
+            ),
+          )),
+          for (int i = 0; i < 7; i++)
+            DataCell(_buildRoundedTextField('')),
         ]),
-
-
       ],
     );
   }
@@ -485,7 +354,7 @@ class _SleepDiaryState extends State<SleepDiary> {
   DataColumn buildCustomDataColumn(String label, Color backgroundColor) {
     return DataColumn(
       label: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+        padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
         decoration: BoxDecoration(
           color: backgroundColor,
           border: Border.all(color: AppColors.buttonColor, width: 0.0),
@@ -503,9 +372,11 @@ class _SleepDiaryState extends State<SleepDiary> {
 
   Widget _buildRoundedTextField(String initialValue) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      width: 60,
+      height: 25,
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(3.0),
         border: Border.all(color: Colors.grey),
       ),
       child: TextField(
@@ -515,5 +386,8 @@ class _SleepDiaryState extends State<SleepDiary> {
         ),
       ),
     );
+  }
+  String _getMonthAbbreviation(int month) {
+    return DateTime(2021, month).toString().split(' ')[1];
   }
 }

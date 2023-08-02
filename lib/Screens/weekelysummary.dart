@@ -6,23 +6,40 @@ class WeekelySheet extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _WeekelySheetState();
-
   }
 }
 
 class _WeekelySheetState extends State<WeekelySheet> {
+  List<DataColumn> customColumns = [
+    buildCustomDataColumn('BT'),
+    buildCustomDataColumn('SL'),
+    buildCustomDataColumn('AN'),
+    buildCustomDataColumn('AL'),
+    buildCustomDataColumn('WT'),
+    buildCustomDataColumn('ZS'),
+  ];
+
+  DataRow generateDataRow(List<String> values) {
+    return DataRow(
+      cells: values
+          .map((value) => DataCell(Container(
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          border: Border.all(color: Colors.black, width: 1.0),
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 23.0),
+        child: Text(
+          value,
+          style: TextStyle(color: Colors.black), // You can customize the text style here
+        ),
+      )))
+          .toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<DataColumn> customColumns = [
-      buildCustomDataColumn('BT',),
-      buildCustomDataColumn('SL'),
-      buildCustomDataColumn('AN'),
-      buildCustomDataColumn('AL'),
-      buildCustomDataColumn('WT'),
-      buildCustomDataColumn('ZS'),
-    ];
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text('Summary Sheet'),
@@ -30,7 +47,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: 16.0, left: 10.0,right:10.0),
+        padding: EdgeInsets.only(top: 16.0, left: 10.0, right: 10.0),
         child: Column(
           children: [
             Container(
@@ -46,45 +63,16 @@ class _WeekelySheetState extends State<WeekelySheet> {
             Expanded(
               child: ListView(
                 scrollDirection: Axis.horizontal,
-
                 children: [
                   DataTable(
                     columnSpacing: 8.0,
                     columns: customColumns,
-
                     rows: [
-                      DataRow(cells: [
-                        DataCell(Text('Value1')),
-                        DataCell(Text('Value2')),
-                        DataCell(Text('Value3')),
-                        DataCell(Text('Value4')),
-                        DataCell(Text('Value5')),
-                        DataCell(Text('Value6')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('Value7')),
-                        DataCell(Text('Value8')),
-                        DataCell(Text('Value9')),
-                        DataCell(Text('Value10')),
-                        DataCell(Text('Value11')),
-                        DataCell(Text('Value12')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('Value7')),
-                        DataCell(Text('Value8')),
-                        DataCell(Text('Value9')),
-                        DataCell(Text('Value10')),
-                        DataCell(Text('Value11')),
-                        DataCell(Text('Value12')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('Value7')),
-                        DataCell(Text('Value8')),
-                        DataCell(Text('Value9')),
-                        DataCell(Text('Value10')),
-                        DataCell(Text('Value11')),
-                        DataCell(Text('Value12')),
-                      ]),
+                      generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      // Add more rows as needed using the generateDataRow function.
                     ],
                   ),
                 ],
@@ -112,7 +100,4 @@ DataColumn buildCustomDataColumn(String label) {
     ),
   );
 }
-
-
-
 

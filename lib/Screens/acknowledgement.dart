@@ -39,7 +39,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
                 padding: EdgeInsets.symmetric(horizontal: 20), // Add left and right padding
                 child: Text(Strings.textcitation,
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: 14,
                     color: Colors.black,
                   ),
                 ),
