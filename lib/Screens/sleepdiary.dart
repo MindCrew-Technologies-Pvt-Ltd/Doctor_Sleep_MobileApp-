@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/color.dart';
 import '../constants/string.dart';
-
-
+import '../database_helper.dart';
 
 class SleepDiary extends StatefulWidget {
   @override
@@ -10,6 +9,7 @@ class SleepDiary extends StatefulWidget {
 }
 
 class _SleepDiaryState extends State<SleepDiary> {
+  DatabaseHelper dbHelper = DatabaseHelper();
 
   int numberOfContainers = 0; // Set the initial number of sleep data containers you want to display
 
@@ -32,6 +32,51 @@ class _SleepDiaryState extends State<SleepDiary> {
     }
 
     return headers;
+  }
+
+  TextEditingController bedTimeController = TextEditingController();
+  TextEditingController sleepLatencyController = TextEditingController();
+  TextEditingController numberOfAwakeningsController = TextEditingController();
+  TextEditingController averageLengthAwakeningController = TextEditingController();
+  TextEditingController wakeTimeController = TextEditingController();
+  TextEditingController scoopsZenbevController = TextEditingController();
+
+  void _saveDataToDatabase() async {
+    try {
+      // Gather the sleep data from your containers and store it in a Map
+      Map<String, dynamic> sleepData = {
+        'week_number': numberOfContainers,
+        'bed_time':'hi',
+        'sleep_latency': sleepLatencyController.text,
+        'number_of_awakenings': numberOfAwakeningsController.text,
+        'average_length_awakening': averageLengthAwakeningController.text,
+        'wake_time': wakeTimeController.text,
+        'scoops_zenbev': scoopsZenbevController.text,
+        // Add other fields and their values here based on your data
+      };
+
+      int? result = await dbHelper.saveSleepData(sleepData);
+
+      if (result != 0) {
+        print('Data saved to database successfully');
+      } else {
+        print('Error saving data to database');
+      }
+    } catch (e) {
+      print('Error saving data: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDataFromDatabase();
+  }
+
+  // Add this method to load data from the database
+  void _loadDataFromDatabase() async {
+    List<Map<String, dynamic>>? sleepDataList = await dbHelper.getSleepData();
+    print("Sleep Data from Database: $sleepDataList");
   }
 
   @override
@@ -83,7 +128,7 @@ class _SleepDiaryState extends State<SleepDiary> {
                   SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Add your button's onPressed logic here
+                      _saveDataToDatabase(); // Add your button's onPressed logic here
                     },
                     child: Text(
                       'Save Data',
@@ -95,6 +140,7 @@ class _SleepDiaryState extends State<SleepDiary> {
                   ),
                 ],
               ),
+
               SizedBox(height: 2),
               Column(
                 children: List.generate(
@@ -255,7 +301,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField('')),
+            DataCell(_buildRoundedTextField()),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -273,7 +319,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField('')),
+            DataCell(_buildRoundedTextField()),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -291,7 +337,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField('')),
+            DataCell(_buildRoundedTextField()),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -309,7 +355,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField('')),
+            DataCell(_buildRoundedTextField()),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -327,7 +373,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField('')),
+            DataCell(_buildRoundedTextField()),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -345,7 +391,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField('')),
+            DataCell(_buildRoundedTextField()),
         ]),
       ],
     );
@@ -370,7 +416,7 @@ class _SleepDiaryState extends State<SleepDiary> {
     );
   }
 
-  Widget _buildRoundedTextField(String initialValue) {
+  Widget _buildRoundedTextField() {
     return Container(
       width: 60,
       height: 25,
@@ -380,13 +426,15 @@ class _SleepDiaryState extends State<SleepDiary> {
         border: Border.all(color: Colors.grey),
       ),
       child: TextField(
-        controller: TextEditingController(text: initialValue),
+        controller: TextEditingController(), // Create a new instance here
         decoration: InputDecoration(
           border: InputBorder.none,
         ),
       ),
     );
   }
+
+
   String _getMonthAbbreviation(int month) {
     return DateTime(2021, month).toString().split(' ')[1];
   }

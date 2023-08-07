@@ -4,6 +4,7 @@ import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
 import '../constants/string.dart';
 import 'acknowledgement.dart';
+import 'graphs.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -91,7 +92,10 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Add functionality for New Button 2
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Graphs()),
+                          );// Add functionality for New Button 2
                         },
                         child: Text(Strings.button3),
                         style: ButtonStyle(
@@ -122,6 +126,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
 
 
 

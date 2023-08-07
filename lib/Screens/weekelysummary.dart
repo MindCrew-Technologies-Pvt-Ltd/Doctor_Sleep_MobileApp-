@@ -69,9 +69,9 @@ class _WeekelySheetState extends State<WeekelySheet> {
                     columns: customColumns,
                     rows: [
                       generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      // generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      // generateDataRow(['--', '--', '--', '--', '--', '--']),
+                      // generateDataRow(['--', '--', '--', '--', '--', '--']),
                       // Add more rows as needed using the generateDataRow function.
                     ],
                   ),

@@ -10,7 +10,7 @@ class Strings{
   static const String sleepdiarytime = "Enter military time (e.g., 11:30PM as 23:30)";
   static const String register = "Register a new week.";
   static const String savedata = "SAVE DATA";
-  static const String Modernize = "Modernize your sleep trackng habits by using the\nDoctor-Developed Zenbev Sleep Calculator";
+  static const String Modernize = "Modernize your sleep tracking habits by using the\nDoctor-Developed Zenbev Sleep Calculator";
   static const String tap1 = "Tap the button to register a\n new week.";
   static const String tap2 = "Enter sleep data as you\nprogess.";
   static const String tap3 = "Keep track of your sleep habits\nthrough informative graphs.";

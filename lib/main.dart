@@ -59,7 +59,7 @@ class CenteredButtonPage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Positioned(
-            top: 110,
+            top: 0.15 * MediaQuery.of(context).size.height,
             left: 0,
             right: 0,
             child: Column(
@@ -67,10 +67,10 @@ class CenteredButtonPage extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/zenbev.png',
-                  width: 270,
-                  height: 70,
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  height: 80,
                 ),
-                SizedBox(height: 180),
+                SizedBox(height: 0.31 * MediaQuery.of(context).size.height),
                 Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -87,7 +87,8 @@ class CenteredButtonPage extends StatelessWidget {
                       showLanguageDialog(context);
                     },
                     elevation: 5.0,
-                    padding: EdgeInsets.only(left: 30, right: 30),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.08),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
@@ -97,7 +98,7 @@ class CenteredButtonPage extends StatelessWidget {
                         Text(
                           'Language',
                           style: TextStyle(
-                            fontSize: 18.0,
+                            fontSize: 0.04 * MediaQuery.of(context).size.height,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -117,7 +118,7 @@ class CenteredButtonPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 225,
+            top: 0.3 * MediaQuery.of(context).size.height,
             left: 0,
             right: 0,
             child: Column(
@@ -126,12 +127,14 @@ class CenteredButtonPage extends StatelessWidget {
                 Text(
                   'Sleep Calculator',
                   style: TextStyle(
-                    fontSize: 32.0,
+                    fontSize: 0.05 * MediaQuery.of(context).size.height,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: 8,),
+                SizedBox(
+                  height: 8,
+                ),
                 Container(
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
@@ -142,7 +145,7 @@ class CenteredButtonPage extends StatelessWidget {
                     'Doctor-Developed',
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
-                      fontSize: 19.0,
+                      fontSize: 0.03 * MediaQuery.of(context).size.height,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -152,13 +155,13 @@ class CenteredButtonPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 25, // Adjust the top position as needed to place the new image
-            right: 2,
+            top: 0.05 * MediaQuery.of(context).size.height,
+            right: 0.03 * MediaQuery.of(context).size.width,
             child: IconButton(
               icon: Icon(
                 Icons.mail_outline_outlined,
                 color: Colors.black,
-                size: 32,
+                size: 0.04 * MediaQuery.of(context).size.height,
               ),
               onPressed: () {
                 // Add functionality for when the mail icon is pressed
@@ -166,12 +169,12 @@ class CenteredButtonPage extends StatelessWidget {
             ),
           ),
           Positioned(
-            bottom: 412, // Adjust the top position as needed to place the new image
-            left: 20,
+            top: 0.215 * MediaQuery.of(context).size.height,
+            left: 0,
             right: 0,
             child: Image.asset(
-              'assets/images/biosential.png', // Replace with the path to your new image
-              width: 200, // Adjust the width as needed
+              'assets/images/biosential.png',
+              width: 0.5 * MediaQuery.of(context).size.width,
               height: 70,
             ),
           ),
