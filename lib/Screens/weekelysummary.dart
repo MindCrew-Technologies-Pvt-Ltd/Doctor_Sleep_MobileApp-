@@ -56,7 +56,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
               width: 340,
               padding: EdgeInsets.all(16.0),
               child: Text(
-                "BT  =  Bed Time (Time Entering Bed)\n\nSL  =  Sleep Latency (Time  Taken To Fall Asleep)\n\nAN =  Number of Awakenings\n\nAL  =  Average Length of Awakenings\n\nWT =  Wake Time (Time of Awakening)\n\nZS  =  Scoops of Zenbev ",
+                "BT  =  Bed Time (Time Entering Bed)\n\nSL  =  Sleep Latency (Time Taken To Fall Asleep)\n\nAN =  Number of Awakenings\n\nAL  =  Average Length of Awakenings (Minutes)\n\nWT =  Wake Time (Time of Awakening)\n\nZS  =  Scoops of Zenbev ",
                 style: TextStyle(fontSize: 14),
               ),
             ),

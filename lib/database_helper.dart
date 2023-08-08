@@ -37,9 +37,9 @@ class DatabaseHelper {
             number_of_awakenings TEXT,
             average_length_awakening TEXT,
             wake_time TEXT,
-            scoops_zenbev TEXT
-            -- Add other fields and their types here based on your data
-          )
+            scoops_zenbev TEXT,
+            sleep_date TEXT
+            )
         ''');
       },
     );
@@ -53,5 +53,15 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>?> getSleepData() async {
     final Database? db = await database;
     return await db?.query('sleep_data');
+  }
+
+  Future<List<Map<String, dynamic>>?> getSleepDataByWeek(int weekNumber) async {
+    final Database? db = await database;
+    return await db?.query('sleep_data', where: 'week_number = ?', whereArgs: [weekNumber]);
+  }
+
+  Future<int?> updateSleepData(int weekNumber, Map<String, dynamic> sleepData) async {
+    final Database? db = await database;
+    return await db?.update('sleep_data', sleepData, where: 'week_number = ?', whereArgs: [weekNumber]);
   }
 }

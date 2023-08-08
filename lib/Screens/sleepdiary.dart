@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants/color.dart';
 import '../constants/string.dart';
 import '../database_helper.dart';
+
 
 class SleepDiary extends StatefulWidget {
   @override
@@ -10,8 +12,11 @@ class SleepDiary extends StatefulWidget {
 
 class _SleepDiaryState extends State<SleepDiary> {
   DatabaseHelper dbHelper = DatabaseHelper();
+  PageController _pageController = PageController();
+  int numberOfContainers = 0;
 
-  int numberOfContainers = 0; // Set the initial number of sleep data containers you want to display
+  get weekNumber => numberOfContainers; // Set the initial number of sleep data containers you want to display
+
 
   List<String> getColumnHeaders(int weekNumber) {
     DateTime currentDate = DateTime.now();
@@ -41,31 +46,46 @@ class _SleepDiaryState extends State<SleepDiary> {
   TextEditingController wakeTimeController = TextEditingController();
   TextEditingController scoopsZenbevController = TextEditingController();
 
-  void _saveDataToDatabase() async {
+  void _saveDataToDatabase(String bedTime,
+      String sleepLatency,
+      String numberOfAwakenings,
+      String averageLengthAwakening,
+      String wakeTime,
+      String scoopsZenbev,) async {
+    print('hi $bedTime');
     try {
+      // Calculate the start date of the current week
+      DateTime currentDate = DateTime.now();
+      DateTime weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+
+      // Adjust the start date based on the given week number
+      weekStartDate = weekStartDate.add(Duration(days: (weekNumber - 1) * 7));
+print(bedTimeController.text);
       // Gather the sleep data from your containers and store it in a Map
       Map<String, dynamic> sleepData = {
         'week_number': numberOfContainers,
-        'bed_time':'hi',
+        'bed_time': bedTimeController.text,
         'sleep_latency': sleepLatencyController.text,
         'number_of_awakenings': numberOfAwakeningsController.text,
         'average_length_awakening': averageLengthAwakeningController.text,
         'wake_time': wakeTimeController.text,
         'scoops_zenbev': scoopsZenbevController.text,
+        'sleep_date': weekStartDate.toIso8601String().substring(0, 10), // Use the start date of the week
         // Add other fields and their values here based on your data
       };
 
-      int? result = await dbHelper.saveSleepData(sleepData);
+     /* int? result = await dbHelper.saveSleepData(sleepData);
 
       if (result != 0) {
         print('Data saved to database successfully');
       } else {
         print('Error saving data to database');
-      }
+      }*/
     } catch (e) {
       print('Error saving data: $e');
     }
   }
+
 
   @override
   void initState() {
@@ -116,7 +136,7 @@ class _SleepDiaryState extends State<SleepDiary> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.add_circle_outline_outlined, size: 40),
-                    onPressed: _addNewContainer,
+                     onPressed: _addNewContainer,
                   ),
                   SizedBox(width: 15),
                   Text(
@@ -127,8 +147,15 @@ class _SleepDiaryState extends State<SleepDiary> {
                   ),
                   SizedBox(width: 20),
                   ElevatedButton(
-                    onPressed: () {
-                      _saveDataToDatabase(); // Add your button's onPressed logic here
+                    onPressed: () async {
+                       _saveDataToDatabase(
+                         bedTimeController.text,
+                         sleepLatencyController.text,
+                         numberOfAwakeningsController.text,
+                         averageLengthAwakeningController.text,
+                         wakeTimeController.text,
+                         scoopsZenbevController.text,
+                      );
                     },
                     child: Text(
                       'Save Data',
@@ -142,10 +169,13 @@ class _SleepDiaryState extends State<SleepDiary> {
               ),
 
               SizedBox(height: 2),
-              Column(
-                children: List.generate(
-                  numberOfContainers,
-                      (index) => Padding(
+              SizedBox(
+                // Add a specific height to the PageView
+                height: 480,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: numberOfContainers,
+                  itemBuilder: (context, index) => Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: Card(
                       elevation: 4,
@@ -181,13 +211,37 @@ class _SleepDiaryState extends State<SleepDiary> {
               border: Border.all(color: Colors.black, width: 1),
               color: AppColors.primaryColor,
             ),
-            child: Text(
-              'Week $weekNumber',
-              style: TextStyle(
-                fontSize: 18,
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    setState(() {
+                      numberOfContainers--;
+                      // _pageController.animateToPage(numberOfContainers - 1, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    });
+                  },
+                ),
+                Text(
+                  'Week $weekNumber',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.arrow_forward),
+                  onPressed: () {
+                    setState(() {
+                      numberOfContainers++;
+                    });
+                    _pageController.animateToPage(numberOfContainers - 1, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
+                  },
+                ),
+              ],
             ),
           ),
+
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -253,6 +307,7 @@ class _SleepDiaryState extends State<SleepDiary> {
     );
   }
 
+
   Widget buildAverageContainer(String text) {
     return Container(
       width: 36,
@@ -301,7 +356,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField()),
+            DataCell(_buildRoundedTextField(bedTimeController)),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -319,7 +374,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField()),
+            DataCell(_buildRoundedTextField(sleepLatencyController)),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -337,7 +392,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField()),
+            DataCell(_buildRoundedTextField(numberOfAwakeningsController)),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -355,7 +410,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField()),
+            DataCell(_buildRoundedTextField(averageLengthAwakeningController)),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -373,7 +428,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField()),
+            DataCell(_buildRoundedTextField(wakeTimeController)),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -391,7 +446,7 @@ class _SleepDiaryState extends State<SleepDiary> {
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField()),
+            DataCell(_buildRoundedTextField(scoopsZenbevController)),
         ]),
       ],
     );
@@ -416,7 +471,8 @@ class _SleepDiaryState extends State<SleepDiary> {
     );
   }
 
-  Widget _buildRoundedTextField() {
+  Widget _buildRoundedTextField(TextEditingController bedTimeController,) {
+    TextEditingController controller = TextEditingController(); // Create a new instance
     return Container(
       width: 60,
       height: 25,
@@ -426,13 +482,16 @@ class _SleepDiaryState extends State<SleepDiary> {
         border: Border.all(color: Colors.grey),
       ),
       child: TextField(
-        controller: TextEditingController(), // Create a new instance here
+        controller: controller, // Use the new controller instance for the TextField
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
         decoration: InputDecoration(
           border: InputBorder.none,
         ),
       ),
     );
   }
+
+
 
 
   String _getMonthAbbreviation(int month) {
