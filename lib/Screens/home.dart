@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
               child: Text(
-                'ZENBEV SLEEP CALCULATOR',
+                Strings.cal,
                 style: TextStyle(
                   fontSize: 23,
                 ),
@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircularContainerWithNumber(number: '1', text: "Tap the button to register a\n new week."),
+                      CircularContainerWithNumber(number: '1', text: Strings.tap1),
                       SizedBox(height: 10), // Add spacing between the circular containers
                       CircularContainerWithNumber(number: '2', text: Strings.tap2),
                       SizedBox(height: 10),
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SleepDiary()),
+                            MaterialPageRoute(builder: (context) => SleepDiaryPage()),
                           );
                         },
                         child: Text(Strings.sleepdiary),

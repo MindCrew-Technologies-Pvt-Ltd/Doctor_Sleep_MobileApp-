@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../constants/color.dart';
+import '../constants/string.dart';
 
 class Graphs extends StatelessWidget {
   @override
@@ -9,9 +10,9 @@ class Graphs extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Summary Graph',
+          Strings.appbargraph,
         ),
-        backgroundColor: AppColors.primaryColor, // Replace with your preferred color
+        backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -20,17 +21,18 @@ class Graphs extends StatelessWidget {
           child: Column(
             children: [
               GraphBox(
-                title: 'Sleep Latency',
+                title: Strings.graph1title,
                 child: SleepLatencyScatterPlot(),
               ),
               SizedBox(height: 20),
+
               GraphBox(
-                title: 'Sleep Efficiency',
+                title: Strings.graph2title,
                 child: SleepEfficiencyScatterPlot(),
               ),
               SizedBox(height: 20),
               GraphBox(
-                title: 'TST and TIB',
+                title: Strings.graph3title,
                 child: TSTAndTIBScatterPlot(),
               ),
             ],
@@ -76,11 +78,11 @@ class GraphBox extends StatelessWidget {
 class SleepLatencyScatterPlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Replace this data with your actual data for sleep latency
     List<FlSpot> sleepLatencyData = [
-      FlSpot(1, 6),
-      FlSpot(2, 7),
-      FlSpot(3, 8),
+      FlSpot(1, 360), // 1 week = 360 minutes
+      FlSpot(2, 420), // 2 weeks = 420 minutes
+      FlSpot(3, 480), // 3 weeks = 480 minutes
+      FlSpot(4, 540), // 4 weeks = 540 minutes
       // Add more data points as needed
     ];
 
@@ -93,23 +95,28 @@ class SleepLatencyScatterPlot extends StatelessWidget {
               spots: sleepLatencyData,
               isCurved: true,
               dotData: FlDotData(show: true),
-              // Add more configurations as needed for labels, axes, etc.
             ),
           ],
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(showTitles: true,),
+
+          ),
         ),
       ),
     );
-  }
+}
 }
 
 class SleepEfficiencyScatterPlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Replace this data with your actual data for sleep efficiency
     List<FlSpot> sleepEfficiencyData = [
       FlSpot(1, 85),
       FlSpot(2, 90),
       FlSpot(3, 80),
+      FlSpot(4, 75),
+
       // Add more data points as needed
     ];
 
@@ -122,9 +129,12 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
               spots: sleepEfficiencyData,
               isCurved: true,
               dotData: FlDotData(show: true),
-              // Add more configurations as needed for labels, axes, etc.
             ),
           ],
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(showTitles: true),
+          ),
         ),
       ),
     );
@@ -134,18 +144,20 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
 class TSTAndTIBScatterPlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Replace this data with your actual data for TST and TIB
     List<FlSpot> tstData = [
-      FlSpot(1, 7),
-      FlSpot(2, 7.5),
-      FlSpot(3, 8),
+      FlSpot(1, 420), // 1 week = 420 minutes
+      FlSpot(2, 450), // 2 weeks = 450 minutes
+      FlSpot(3, 480), // 3 weeks = 480 minutes
+      FlSpot(4, 510), // 4 weeks = 510 minutes
+
       // Add more data points as needed
     ];
 
     List<FlSpot> tibData = [
-      FlSpot(1, 8),
-      FlSpot(2, 8.5),
-      FlSpot(3, 9),
+      FlSpot(1, 480), // 1 week = 480 minutes
+      FlSpot(2, 510), // 2 weeks = 510 minutes
+      FlSpot(3, 540), // 3 weeks = 540 minutes
+      FlSpot(4, 570), // 4 weeks = 570 minutes
       // Add more data points as needed
     ];
 
@@ -155,27 +167,22 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
         LineChartData(
           lineBarsData: [
             LineChartBarData(
-              spots: [
-                FlSpot(0, 0), // Dummy spot to avoid rendering at index 0
-                ...tstData,
-              ],
+              spots: [FlSpot(0, 0), ...tstData],
               isCurved: true,
               dotData: FlDotData(show: true),
-              // Add more configurations as needed for labels, axes, etc.
             ),
             LineChartBarData(
-              spots: [
-                FlSpot(0, 0), // Dummy spot to avoid rendering at index 0
-                ...tibData,
-              ],
+              spots: [FlSpot(0, 0), ...tibData],
               isCurved: true,
               dotData: FlDotData(show: true),
-              // Add more configurations as needed for labels, axes, etc.
             ),
           ],
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(showTitles: true),
+          ),
         ),
       ),
     );
   }
 }
-

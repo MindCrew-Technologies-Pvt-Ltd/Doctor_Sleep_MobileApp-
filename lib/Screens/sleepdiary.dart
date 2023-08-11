@@ -1,19 +1,27 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../constants/color.dart';
 import '../constants/string.dart';
 import '../database_helper.dart';
+import 'SleepData.dart';
+import 'package:intl/intl.dart';
 
 
-class SleepDiary extends StatefulWidget {
+
+class SleepDiaryPage extends StatefulWidget {
   @override
   _SleepDiaryState createState() => _SleepDiaryState();
 }
 
-class _SleepDiaryState extends State<SleepDiary> {
+class _SleepDiaryState extends State<SleepDiaryPage> {
   DatabaseHelper dbHelper = DatabaseHelper();
   PageController _pageController = PageController();
   int numberOfContainers = 0;
+  Map<int, Map<String, dynamic>> sleepDataMap = {};
+
+
 
   get weekNumber => numberOfContainers; // Set the initial number of sleep data containers you want to display
 
@@ -39,52 +47,67 @@ class _SleepDiaryState extends State<SleepDiary> {
     return headers;
   }
 
-  TextEditingController bedTimeController = TextEditingController();
-  TextEditingController sleepLatencyController = TextEditingController();
-  TextEditingController numberOfAwakeningsController = TextEditingController();
-  TextEditingController averageLengthAwakeningController = TextEditingController();
-  TextEditingController wakeTimeController = TextEditingController();
-  TextEditingController scoopsZenbevController = TextEditingController();
+  // Inside your _saveDataToDatabase method
+  void _saveDataToDatabase() async {
+    // Calculate start date once upfront
+    final currentDate = DateTime.now();
+    final weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+    final formattedWeekStartDate = DateFormat('yyyy-MM-dd').format(weekStartDate);
+    if(sleepDataMap.isNotEmpty){
+      for (int i = 0; i < sleepDataMap.length; i++) {
+        final sleepData = sleepDataMap[i];
 
-  void _saveDataToDatabase(String bedTime,
-      String sleepLatency,
-      String numberOfAwakenings,
-      String averageLengthAwakening,
-      String wakeTime,
-      String scoopsZenbev,) async {
-    print('hi $bedTime');
-    try {
-      // Calculate the start date of the current week
-      DateTime currentDate = DateTime.now();
-      DateTime weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+        final weekNumberNew = weekNumber;
+        final bedTime = sleepData?['bedTime'] ?? '';
+        final sleepLatency = sleepData?['sleepLatency'] ?? '';
+        final numberOfAwakenings = sleepData?['numberOfAwakenings'] ?? '';
+        final averageLengthAwakening = sleepData?['averageLengthAwakening'] ?? '';
+        final wakeTime = sleepData?['wakeTime'] ?? '';
+        final scoopsZenbev = sleepData?['scoopsZenbev'] ?? '';
 
-      // Adjust the start date based on the given week number
-      weekStartDate = weekStartDate.add(Duration(days: (weekNumber - 1) * 7));
-print(bedTimeController.text);
-      // Gather the sleep data from your containers and store it in a Map
-      Map<String, dynamic> sleepData = {
-        'week_number': numberOfContainers,
-        'bed_time': bedTimeController.text,
-        'sleep_latency': sleepLatencyController.text,
-        'number_of_awakenings': numberOfAwakeningsController.text,
-        'average_length_awakening': averageLengthAwakeningController.text,
-        'wake_time': wakeTimeController.text,
-        'scoops_zenbev': scoopsZenbevController.text,
-        'sleep_date': weekStartDate.toIso8601String().substring(0, 10), // Use the start date of the week
-        // Add other fields and their values here based on your data
-      };
+        final dataToSave = SleepData(
+          id: null,
+          weekNumber: weekNumberNew,
+          bedTime: bedTime,
+          sleepLatency: sleepLatency,
+          numberOfAwakenings: numberOfAwakenings,
+          averageLengthAwakening: averageLengthAwakening,
+          wakeTime: wakeTime,
+          scoopsZenbev: scoopsZenbev,
+          sleepDate: formattedWeekStartDate,
+        );
 
-     /* int? result = await dbHelper.saveSleepData(sleepData);
+        await dbHelper.saveSleepData(dataToSave);
+      }
 
-      if (result != 0) {
-        print('Data saved to database successfully');
-      } else {
-        print('Error saving data to database');
-      }*/
-    } catch (e) {
-      print('Error saving data: $e');
+      if (kDebugMode) {
+        print('Data saved successfully');
+      }
+    }
+    else{
+      if (kDebugMode) {
+        print('No data to save');
+      }
     }
   }
+
+// Inside your _loadDataFromDatabase method
+  void _loadDataFromDatabase() async {
+    // DateTime currentDate = DateTime.now();
+    // DateTime weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+
+    for (int i = 0; i < 7; i++) {
+      List<Map<String, dynamic>>? sleepDataList = await dbHelper.getSleepDataByWeekAndContainer(weekNumber);
+
+      if (sleepDataList != null && sleepDataList.isNotEmpty) {
+        setState(() {
+          sleepDataMap[i] = Map<String, dynamic>.from(sleepDataList[0]);
+        });
+      }
+    }
+  }
+
+
 
 
   @override
@@ -93,17 +116,11 @@ print(bedTimeController.text);
     _loadDataFromDatabase();
   }
 
-  // Add this method to load data from the database
-  void _loadDataFromDatabase() async {
-    List<Map<String, dynamic>>? sleepDataList = await dbHelper.getSleepData();
-    print("Sleep Data from Database: $sleepDataList");
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ENTER SLEEP DIARY HERE'),
+        title: Text(Strings.sleepappbar),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -136,7 +153,7 @@ print(bedTimeController.text);
                 children: [
                   IconButton(
                     icon: Icon(Icons.add_circle_outline_outlined, size: 40),
-                     onPressed: _addNewContainer,
+                    onPressed: _addNewContainer,
                   ),
                   SizedBox(width: 15),
                   Text(
@@ -148,17 +165,11 @@ print(bedTimeController.text);
                   SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () async {
-                       _saveDataToDatabase(
-                         bedTimeController.text,
-                         sleepLatencyController.text,
-                         numberOfAwakeningsController.text,
-                         averageLengthAwakeningController.text,
-                         wakeTimeController.text,
-                         scoopsZenbevController.text,
-                      );
+                      print('hi');
+                      _saveDataToDatabase();
                     },
                     child: Text(
-                      'Save Data',
+                      Strings.savedata,
                       style: TextStyle(fontSize: 10),
                     ),
                     style: ButtonStyle(
@@ -258,7 +269,7 @@ print(bedTimeController.text);
               padding: EdgeInsets.all(8),
               color: AppColors.averageColor, // Replace with your desired color
               child: Text(
-                'AVERAGE VALUES',
+                Strings.aveargevalue,
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.black, // Replace with your desired text color
@@ -356,7 +367,8 @@ print(bedTimeController.text);
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField(bedTimeController)),
+            DataCell(_buildBedTimeTextField( i+1,columnHeaders[i]))
+          ,
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -374,7 +386,7 @@ print(bedTimeController.text);
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField(sleepLatencyController)),
+            DataCell(_buildSleepLatencyTextField( i+1,columnHeaders[i])),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -392,7 +404,7 @@ print(bedTimeController.text);
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField(numberOfAwakeningsController)),
+            DataCell( _buildNumberofAwakeningsTextField( i+1,columnHeaders[i])),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -410,7 +422,7 @@ print(bedTimeController.text);
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField(averageLengthAwakeningController)),
+            DataCell(_buildAverageLengthofAwakeningTextField(i+1, columnHeaders[i])),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -428,7 +440,7 @@ print(bedTimeController.text);
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField(wakeTimeController)),
+            DataCell(_buildWakeTimeTextField(i+1, columnHeaders[i])),
         ]),
         DataRow(cells: [
           DataCell(Container(
@@ -446,7 +458,7 @@ print(bedTimeController.text);
             ),
           )),
           for (int i = 0; i < 7; i++)
-            DataCell(_buildRoundedTextField(scoopsZenbevController)),
+            DataCell(_buildScoopsofZenbevTextField(i+1, columnHeaders[i])),
         ]),
       ],
     );
@@ -471,8 +483,24 @@ print(bedTimeController.text);
     );
   }
 
-  Widget _buildRoundedTextField(TextEditingController bedTimeController,) {
-    TextEditingController controller = TextEditingController(); // Create a new instance
+  Widget _buildBedTimeTextField(int containerIndex, String sleepDate) {
+    Map<String, dynamic> sleepData = sleepDataMap[containerIndex] ?? {};
+
+    // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
+    if (sleepData.isEmpty) {
+      dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
+        print('data[0]bed_time -> $data');
+
+        if (data != null && data.isNotEmpty) {
+          setState(() {
+            SleepData sleepData = SleepData.fromMap(data[0]);
+            sleepDataMap[containerIndex] = sleepData.toMap();
+          });
+          print('data[0]bed_time -> ${data[0]}');
+        }
+      });
+    }
+
     return Container(
       width: 60,
       height: 25,
@@ -481,8 +509,14 @@ print(bedTimeController.text);
         borderRadius: BorderRadius.circular(3.0),
         border: Border.all(color: Colors.grey),
       ),
-      child: TextField(
-        controller: controller, // Use the new controller instance for the TextField
+      child: TextFormField(
+        initialValue: sleepData['bedTime'],
+        onChanged: (value) {
+          setState(() {
+            sleepData['bedTime'] = value;
+            sleepDataMap[containerIndex] = sleepData;
+          });
+        },
         inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
         decoration: InputDecoration(
           border: InputBorder.none,
@@ -492,7 +526,205 @@ print(bedTimeController.text);
   }
 
 
+  Widget _buildSleepLatencyTextField(int containerIndex, String sleepDate) {
+    Map<String, dynamic> sleepData = sleepDataMap[containerIndex] ?? {};
 
+    // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
+    if (sleepData.isEmpty) {
+      dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
+        if (data != null && data.isNotEmpty) {
+          setState(() {
+            Map<String, dynamic> convertedData = Map<String, dynamic>.from(data[0]);
+            sleepDataMap[containerIndex] = convertedData;
+          });
+        }
+      });
+    }
+
+    return Container(
+      width: 60,
+      height: 25,
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3.0),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: TextFormField(
+        initialValue: sleepData['sleepLatency'],
+        onChanged: (value) {
+          setState(() {
+            sleepData['sleepLatency'] = value;
+            sleepDataMap[containerIndex] = sleepData;
+          });
+        },
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+
+// Repeat the above pattern for other _buildXXXTextField functions
+
+  Widget _buildNumberofAwakeningsTextField(int containerIndex, String sleepDate) {
+    Map<String, dynamic> sleepData = sleepDataMap[containerIndex] ?? {};
+
+    // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
+    if (sleepData.isEmpty) {
+      dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
+        print('data[0]number_of_awakenings -> $data');
+        if (data != null && data.isNotEmpty) {
+          setState(() {
+            Map<String, dynamic> convertedData = Map<String, dynamic>.from(data[0]);
+            sleepDataMap[containerIndex] = convertedData;
+          });
+        }
+      });
+    }
+
+    return Container(
+      width: 60,
+      height: 25,
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3.0),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: TextFormField(
+        initialValue: sleepData['numberOfAwakenings'],
+        onChanged: (value) {
+          setState(() {
+            sleepData['numberOfAwakenings'] = value;
+            sleepDataMap[containerIndex] = sleepData;
+          });
+        },
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAverageLengthofAwakeningTextField(int containerIndex, String sleepDate) {
+    Map<String, dynamic> sleepData = sleepDataMap[containerIndex] ?? {};
+
+    // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
+    if (sleepData.isEmpty) {
+      dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
+        if (data != null && data.isNotEmpty) {
+          setState(() {
+            Map<String, dynamic> convertedData = Map<String, dynamic>.from(data[0]);
+            sleepDataMap[containerIndex] = convertedData;
+          });
+        }
+      });
+    }
+
+    return Container(
+      width: 60,
+      height: 25,
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3.0),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: TextFormField(
+        initialValue: sleepData['averageLengthAwakening'],
+        onChanged: (value) {
+          setState(() {
+            sleepData['averageLengthAwakening'] = value;
+            sleepDataMap[containerIndex] = sleepData;
+          });
+        },
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWakeTimeTextField(int containerIndex, String sleepDate) {
+    Map<String, dynamic> sleepData = sleepDataMap[containerIndex] ?? {};
+
+    // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
+    if (sleepData.isEmpty) {
+      dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
+        if (data != null && data.isNotEmpty) {
+          print('Retrieved data: $data');
+          setState(() {
+            Map<String, dynamic> convertedData = Map<String, dynamic>.from(data[0]);
+            sleepDataMap[containerIndex] = convertedData;
+          });
+        }
+      });
+    }
+
+    return Container(
+      width: 60,
+      height: 25,
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3.0),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: TextFormField(
+        initialValue: sleepData['wakeTime'],
+        onChanged: (value) {
+          setState(() {
+            sleepData['wakeTime'] = value;
+            sleepDataMap[containerIndex] = sleepData;
+          });
+        },
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScoopsofZenbevTextField(int containerIndex, String sleepDate) {
+    Map<String, dynamic> sleepData = sleepDataMap[containerIndex] ?? {};
+
+    // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
+    if (sleepData.isEmpty) {
+      dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
+        if (data != null && data.isNotEmpty) {
+          setState(() {
+            Map<String, dynamic> convertedData = Map<String, dynamic>.from(data[0]);
+            sleepDataMap[containerIndex] = convertedData;
+          });
+        }
+      });
+    }
+
+    return Container(
+      width: 60,
+      height: 25,
+      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 1.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(3.0),
+        border: Border.all(color: Colors.grey),
+      ),
+      child: TextFormField(
+        initialValue: sleepData['scoopsZenbev'],
+        onChanged: (value) {
+          setState(() {
+            sleepData['scoopsZenbev'] = value;
+            sleepDataMap[containerIndex] = sleepData;
+          });
+        },
+        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[\d:]+'))],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+        ),
+      ),
+    );
+  }
 
   String _getMonthAbbreviation(int month) {
     return DateTime(2021, month).toString().split(' ')[1];

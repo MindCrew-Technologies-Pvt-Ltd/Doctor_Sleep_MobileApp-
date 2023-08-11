@@ -1,15 +1,128 @@
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
+import '../constants/string.dart';
+import '../database_helper.dart';
+import 'SleepData.dart';
 
 class WeekelySheet extends StatefulWidget {
   @override
+
+
+
+
   State<StatefulWidget> createState() {
     return _WeekelySheetState();
   }
 }
 
 class _WeekelySheetState extends State<WeekelySheet> {
+  DatabaseHelper dbHelper = DatabaseHelper();
+  List<SleepData> sleepDataList = [];
+  Map<int, List<SleepData>> groupedData = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSleepData();
+
+  }
+
+  _loadSleepData() async {
+    List<SleepData> dataList = await dbHelper.getAllSleepData();
+    groupedData = groupSleepDataByWeek(dataList);
+
+    setState(() {
+      sleepDataList = dataList;
+    });
+  }
+
+  Map<int, List<SleepData>> groupSleepDataByWeek(List<SleepData> dataList) {
+    Map<int, List<SleepData>> result = {};
+
+    for (var sleepData in dataList) {
+      if (!result.containsKey(sleepData.weekNumber)) {
+        result[sleepData.weekNumber] = [];
+      }
+      result[sleepData.weekNumber]!.add(sleepData);
+    }
+
+    return result;
+  }
+
+  Map<String, String> calculateWeeklyAverages(List<SleepData> weekData) {
+    if (weekData.isEmpty) return {};
+
+    double totalBedTime = 0;
+    double totalSleepLatencyInMinutes = 0;
+    int totalNumberOfAwakenings = 0;
+    int totalAverageLengthAwakening = 0;
+    double totalWakeTime = 0;
+    int totalScoopsZenbev = 0;
+    // Calculate other fields as needed
+
+    for (var entry in weekData) {
+      totalBedTime += convertTimeToMinutes(entry.bedTime);
+      totalSleepLatencyInMinutes += convertTimeToMinutes(entry.sleepLatency);
+      totalNumberOfAwakenings += entry.numberOfAwakenings;
+      totalAverageLengthAwakening += entry.averageLengthAwakening;
+      totalWakeTime += convertTimeToMinutes(entry.wakeTime);
+      totalScoopsZenbev += entry.scoopsZenbev;
+      // Add other fields' calculations
+    }
+
+    double averageBedTime = totalBedTime / weekData.length;
+    double averageSleepLatencyInMinutes = totalSleepLatencyInMinutes / weekData.length;
+    double averageNumberOfAwakenings = totalNumberOfAwakenings / weekData.length;
+    double averageAverageLengthAwakening = totalAverageLengthAwakening / weekData.length;
+    double averageWakeTime = totalWakeTime / weekData.length;
+    double averageScoopsZenbev = totalScoopsZenbev / weekData.length;
+    // Calculate other averages
+
+    return {
+      'bedTime': convertMinutesToTime(averageBedTime),
+      'sleepLatency': averageSleepLatencyInMinutes.toStringAsFixed(2),
+      'numberOfAwakenings': averageNumberOfAwakenings.toStringAsFixed(2),
+      'averageLengthAwakening': averageAverageLengthAwakening.toStringAsFixed(2),
+      'wakeTime': convertMinutesToTime(averageWakeTime),
+      'scoopsZenbev': averageScoopsZenbev.toStringAsFixed(2),
+      // Add other fields' averages
+    };
+  }
+
+
+  int convertTimeToMinutes(String time) {
+    var parts = time.split(':');
+    if (parts.length != 2) {
+      // Handle invalid input format
+      return 0;
+    }
+    int hours = int.tryParse(parts[0]) ?? 0;
+    int minutes = int.tryParse(parts[1]) ?? 0;
+    return hours * 60 + minutes;
+  }
+
+
+  String convertMinutesToTime(double minutes) {
+    int hours = (minutes ~/ 60).toInt();
+    int remainingMinutes = (minutes % 60).toInt();
+    return '$hours:${remainingMinutes.toString().padLeft(2, '0')}';
+  }
+
+  // Map<int, List<SleepData>> groupSleepDataByWeek(List<SleepData> dataList) {
+  //   Map<int, List<SleepData>> result = {};
+  //
+  //   for (var sleepData in dataList) {
+  //     if (!result.containsKey(sleepData.weekNumber)) {
+  //       result[sleepData.weekNumber] = [];
+  //     }
+  //     result[sleepData.weekNumber]!.add(sleepData);
+  //   }
+  //
+  //   return result;
+  // }
+
+
   List<DataColumn> customColumns = [
     buildCustomDataColumn('BT'),
     buildCustomDataColumn('SL'),
@@ -42,7 +155,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Summary Sheet'),
+        title: Text(Strings.appbarSS),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -56,7 +169,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
               width: 340,
               padding: EdgeInsets.all(16.0),
               child: Text(
-                "BT  =  Bed Time (Time Entering Bed)\n\nSL  =  Sleep Latency (Time Taken To Fall Asleep)\n\nAN =  Number of Awakenings\n\nAL  =  Average Length of Awakenings (Minutes)\n\nWT =  Wake Time (Time of Awakening)\n\nZS  =  Scoops of Zenbev ",
+                Strings.textss,
                 style: TextStyle(fontSize: 14),
               ),
             ),
@@ -67,14 +180,26 @@ class _WeekelySheetState extends State<WeekelySheet> {
                   DataTable(
                     columnSpacing: 8.0,
                     columns: customColumns,
-                    rows: [
-                      generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      // generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      // generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      // generateDataRow(['--', '--', '--', '--', '--', '--']),
-                      // Add more rows as needed using the generateDataRow function.
-                    ],
+                    rows: sleepDataList.map((sleepData) {
+                      if (sleepData.weekNumber == 1) {
+                        Map<String, String> weeklyAverages = calculateWeeklyAverages(groupedData[sleepData.weekNumber] ?? []);
+
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(weeklyAverages['bedTime']!)),
+                            DataCell(Text(weeklyAverages['sleepLatency']!)),
+                            DataCell(Text(weeklyAverages['numberOfAwakenings']!)),
+                            DataCell(Text(weeklyAverages['averageLengthAwakening']!)),
+                            DataCell(Text(weeklyAverages['wakeTime']!)),
+                            DataCell(Text(weeklyAverages['scoopsZenbev']!)),
+                          ],
+                        );
+                      } else {
+                        return DataRow(cells: []); // Return an empty DataRow for other weeks
+                      }
+                    }).toList(),
                   ),
+
                 ],
               ),
             ),
@@ -100,4 +225,3 @@ DataColumn buildCustomDataColumn(String label) {
     ),
   );
 }
-

@@ -2,6 +2,8 @@ import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
 import 'Screens/home.dart';
 import 'constants/string.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -25,7 +27,7 @@ class CenteredButtonPage extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Choose Your Language'),
+          title: Text(Strings.buttonmessage),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -96,7 +98,7 @@ class CenteredButtonPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Language',
+                          Strings.language,
                           style: TextStyle(
                             fontSize: 0.04 * MediaQuery.of(context).size.height,
                             fontWeight: FontWeight.bold,
@@ -125,7 +127,7 @@ class CenteredButtonPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Sleep Calculator',
+                  Strings.title,
                   style: TextStyle(
                     fontSize: 0.05 * MediaQuery.of(context).size.height,
                     fontWeight: FontWeight.bold,
@@ -142,7 +144,7 @@ class CenteredButtonPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Text(
-                    'Doctor-Developed',
+                    Strings.docdev,
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 0.03 * MediaQuery.of(context).size.height,
@@ -164,9 +166,10 @@ class CenteredButtonPage extends StatelessWidget {
                 size: 0.04 * MediaQuery.of(context).size.height,
               ),
               onPressed: () {
-                // Add functionality for when the mail icon is pressed
+                launch('mailto:company@example.com');
               },
             ),
+
           ),
           Positioned(
             top: 0.215 * MediaQuery.of(context).size.height,

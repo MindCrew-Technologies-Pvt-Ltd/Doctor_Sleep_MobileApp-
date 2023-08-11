@@ -15,7 +15,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ACKNOWLEDGEMENTS'),
+        title: Text(Strings.appbarA),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
