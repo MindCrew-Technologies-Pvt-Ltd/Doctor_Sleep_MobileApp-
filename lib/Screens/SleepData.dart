@@ -9,6 +9,7 @@ class SleepData {
   int scoopsZenbev;
   String sleepDate;
 
+
   SleepData({
     this.id,
     required this.weekNumber,
@@ -20,6 +21,8 @@ class SleepData {
     required this.scoopsZenbev,
     required this.sleepDate,
   });
+
+
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,5 +51,6 @@ class SleepData {
       sleepDate: map['sleep_date'],
     );
   }
+
 
 }

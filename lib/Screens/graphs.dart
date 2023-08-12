@@ -5,6 +5,7 @@ import '../constants/color.dart';
 import '../constants/string.dart';
 
 class Graphs extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,8 +19,10 @@ class Graphs extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
+
           child: Column(
             children: [
+
               GraphBox(
                 title: Strings.graph1title,
                 child: SleepLatencyScatterPlot(),
@@ -76,8 +79,10 @@ class GraphBox extends StatelessWidget {
 }
 
 class SleepLatencyScatterPlot extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
     List<FlSpot> sleepLatencyData = [
       FlSpot(1, 360), // 1 week = 360 minutes
       FlSpot(2, 420), // 2 weeks = 420 minutes
@@ -112,6 +117,7 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<FlSpot> sleepEfficiencyData = [
+
       FlSpot(1, 85),
       FlSpot(2, 90),
       FlSpot(3, 80),
@@ -186,20 +192,4 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
     );
   }
 }
-double calculateTST(double tib, double sleepLatency, int numAwakenings, double avgAwakening) {
-  return tib - sleepLatency - (numAwakenings * avgAwakening);
-}
-
-double calculateSleepEfficiency(double tst, double tib) {
-  return (tst / tib) * 100;
-}
-
-int calculateSleepLatency(String bedtime, String sleepTime) {
-  List<String> bedtimeParts = bedtime.split(':');
-  List<String> sleepTimeParts = sleepTime.split(':');
-
-  int bedtimeMinutes = int.parse(bedtimeParts[0]) * 60 + int.parse(bedtimeParts[1]);
-  int sleepTimeMinutes = int.parse(sleepTimeParts[0]) * 60 + int.parse(sleepTimeParts[1]);
-
-  return sleepTimeMinutes - bedtimeMinutes;
-}
+                  
