@@ -173,35 +173,131 @@ class _WeekelySheetState extends State<WeekelySheet> {
                 style: TextStyle(fontSize: 14),
               ),
             ),
+            SizedBox(height: 8),
             Expanded(
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  DataTable(
-                    columnSpacing: 8.0,
-                    columns: customColumns,
-                    rows: sleepDataList.map((sleepData) {
-                      if (sleepData.weekNumber == 1) {
-                        Map<String, String> weeklyAverages = calculateWeeklyAverages(groupedData[sleepData.weekNumber] ?? []);
+              child: ListView.builder(
+                // scrollDirection: Axis.horizontal,
+                itemCount: groupedData.keys.length,
+                itemBuilder: (BuildContext context, int index) {
+                  int weekNumber = groupedData.keys.elementAt(index);
+                  List<SleepData> weekData = groupedData[weekNumber] ?? [];
+                  Map<String, String> weeklyAverages = calculateWeeklyAverages(weekData);
 
-                        return DataRow(
+                  if (weekData.isNotEmpty) {
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.averageColor,
+                              border: Border.all(color: Colors.black, width: 1.0), // Add border to the container
+                            ),
+                            padding: EdgeInsets.all(7.0), // Add padding to create space around the text
+                            child: Text("W$weekNumber"),
+                          ),
+                  SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                 child: DataTable(
+                      columnSpacing: 8.0,
+                      columns: customColumns,
+                      rows: [
+                        DataRow(
                           cells: [
-                            DataCell(Text(weeklyAverages['bedTime']!)),
-                            DataCell(Text(weeklyAverages['sleepLatency']!)),
-                            DataCell(Text(weeklyAverages['numberOfAwakenings']!)),
-                            DataCell(Text(weeklyAverages['averageLengthAwakening']!)),
-                            DataCell(Text(weeklyAverages['wakeTime']!)),
-                            DataCell(Text(weeklyAverages['scoopsZenbev']!)),
-                          ],
-                        );
-                      } else {
-                        return DataRow(cells: []); // Return an empty DataRow for other weeks
-                      }
-                    }).toList(),
-                  ),
 
-                ],
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(left:1.0,bottom:13),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.buttonColor,
+                                  border: Border.all(color: AppColors.buttonColor, width: 1.0), // Add border to cells
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+                                child: Center(
+                                  child: Text(weeklyAverages['bedTime']!),
+                                ),
+                              ),
+                            )),
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(left:1.0,bottom:13),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.buttonColor,
+                                  border: Border.all(color: AppColors.buttonColor, width: 1.0), // Add border to cells
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+                                child: Center(
+                                  child: Text(weeklyAverages['sleepLatency']!),
+                                ),
+                              ),
+                            )),
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(left:1.0,bottom:13),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.buttonColor,
+                                  border: Border.all(color: AppColors.buttonColor, width: 1.0), // Add border to cells
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 15.0),
+                                child: Center(
+                                  child: Text(weeklyAverages['numberOfAwakenings']!),
+                                ),
+                              ),
+                            )),
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(left:1.0,bottom:13),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.buttonColor,
+                                  border: Border.all(color: AppColors.buttonColor, width: 1.0), // Add border to cells
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+                                child: Center(
+                                  child: Text(weeklyAverages['averageLengthAwakening']!),
+                                ),
+                              ),
+                            )),
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(left:1.0,bottom:13),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.buttonColor,
+                                  border: Border.all(color: AppColors.buttonColor, width: 1.0), // Add border to cells
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+                                child: Center(
+                                  child: Text(weeklyAverages['wakeTime']!),
+                                ),
+                              ),
+                            )),
+                            DataCell(Padding(
+                              padding: const EdgeInsets.only(left:1.0,bottom:13),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.buttonColor,
+                                  border: Border.all(color: AppColors.buttonColor, width: 1.0), // Add border to cells
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+                                child: Center(
+                                  child: Text(weeklyAverages['scoopsZenbev']!),
+                                ),
+                              ),
+                            )),
+                          ],
+                        ),
+                      ],
+                          )
+                          )
+                  )
+                          ]
+                    );
+                  } else {
+                    return SizedBox.shrink(); // Return an empty widget if weekData is empty
+                  }
+                },
               ),
+
             ),
           ],
         ),
@@ -225,3 +321,4 @@ DataColumn buildCustomDataColumn(String label) {
     ),
   );
 }
+
