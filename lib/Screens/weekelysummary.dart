@@ -159,7 +159,8 @@ class _WeekelySheetState extends State<WeekelySheet> {
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
+      child:Padding(
         padding: EdgeInsets.only(top: 16.0, left: 10.0, right: 10.0),
         child: Column(
           children: [
@@ -174,8 +175,8 @@ class _WeekelySheetState extends State<WeekelySheet> {
               ),
             ),
             SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
+            ListView.builder(
+              shrinkWrap: true,
                 // scrollDirection: Axis.horizontal,
                 itemCount: groupedData.keys.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -298,10 +299,11 @@ class _WeekelySheetState extends State<WeekelySheet> {
                 },
               ),
 
-            ),
+
           ],
         ),
       ),
+      )
     );
   }
 }

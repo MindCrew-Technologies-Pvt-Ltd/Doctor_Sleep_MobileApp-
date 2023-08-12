@@ -186,3 +186,20 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
     );
   }
 }
+double calculateTST(double tib, double sleepLatency, int numAwakenings, double avgAwakening) {
+  return tib - sleepLatency - (numAwakenings * avgAwakening);
+}
+
+double calculateSleepEfficiency(double tst, double tib) {
+  return (tst / tib) * 100;
+}
+
+int calculateSleepLatency(String bedtime, String sleepTime) {
+  List<String> bedtimeParts = bedtime.split(':');
+  List<String> sleepTimeParts = sleepTime.split(':');
+
+  int bedtimeMinutes = int.parse(bedtimeParts[0]) * 60 + int.parse(bedtimeParts[1]);
+  int sleepTimeMinutes = int.parse(sleepTimeParts[0]) * 60 + int.parse(sleepTimeParts[1]);
+
+  return sleepTimeMinutes - bedtimeMinutes;
+}
