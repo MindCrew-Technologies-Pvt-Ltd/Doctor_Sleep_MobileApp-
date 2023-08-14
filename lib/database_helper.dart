@@ -121,15 +121,15 @@ class DatabaseHelper {
     print("Fetched sleep data from the database: $maps");
     return List.generate(maps.length, (index) {
       return SleepData(
-        id: maps[index]['id'],
-        weekNumber: maps[index]['week_number'],
-        bedTime: maps[index]['bed_time'],
-        sleepLatency: maps[index]['sleep_latency'],
-        numberOfAwakenings: maps[index]['number_of_awakenings'],
-        averageLengthAwakening: maps[index]['average_length_awakening'],
-        wakeTime: maps[index]['wake_time'],
-        scoopsZenbev: maps[index]['scoops_zenbev'],
-        sleepDate: maps[index]['sleep_date'],
+        id: maps[index]['id'] ,
+        weekNumber: maps[index]['week_number'] ,
+        bedTime: maps[index]['bed_time'] as String,
+        sleepLatency: maps[index]['sleep_latency'] ,
+        numberOfAwakenings: maps[index]['number_of_awakenings'] ,
+        averageLengthAwakening: maps[index]['average_length_awakening'] ,
+        wakeTime: maps[index]['wake_time'] ,
+        scoopsZenbev: maps[index]['scoops_zenbev'] ,
+        sleepDate: maps[index]['sleep_date'] ,
       );
     });
   }

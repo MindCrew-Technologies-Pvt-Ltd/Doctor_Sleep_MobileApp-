@@ -1,12 +1,12 @@
 class SleepData {
-  int? id;
-  int weekNumber;
-  String bedTime;
-  String sleepLatency;
-  int numberOfAwakenings;
-  int averageLengthAwakening;
-  String wakeTime;
-  int scoopsZenbev;
+   int? id;
+   int weekNumber;
+   String bedTime;
+   String sleepLatency;
+   int numberOfAwakenings;
+   String averageLengthAwakening;
+   String wakeTime;
+   String scoopsZenbev;
   String sleepDate;
 
 
@@ -30,7 +30,7 @@ class SleepData {
       'week_number': weekNumber,
       'bed_time': bedTime,
       'sleep_latency': sleepLatency,
-      'number_of_awakenings': numberOfAwakenings,
+      'number_of_awakenings': numberOfAwakenings.toString(),
       'average_length_awakening': averageLengthAwakening,
       'wake_time': wakeTime,
       'scoops_zenbev': scoopsZenbev,
@@ -44,7 +44,7 @@ class SleepData {
       weekNumber: map['week_number'],
       bedTime: map['bed_time'],
       sleepLatency: map['sleep_latency'],
-      numberOfAwakenings: map['number_of_awakenings'], // Convert to string
+      numberOfAwakenings: int.parse(map['number_of_awakenings']), // Convert to string
       averageLengthAwakening: map['average_length_awakening'],
       wakeTime: map['wake_time'],
       scoopsZenbev: map['scoops_zenbev'],

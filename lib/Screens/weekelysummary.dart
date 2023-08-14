@@ -29,7 +29,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
   }
 
   _loadSleepData() async {
-    List<SleepData> dataList = await dbHelper.getAllSleepData();
+    List<SleepData> dataList =  dbHelper.getAllSleepData() as List<SleepData>;
     groupedData = groupSleepDataByWeek(dataList);
 
     setState(() {
@@ -64,10 +64,10 @@ class _WeekelySheetState extends State<WeekelySheet> {
     for (var entry in weekData) {
       totalBedTime += convertTimeToMinutes(entry.bedTime);
       totalSleepLatencyInMinutes += convertTimeToMinutes(entry.sleepLatency);
-      totalNumberOfAwakenings += entry.numberOfAwakenings;
-      totalAverageLengthAwakening += entry.averageLengthAwakening;
+      totalNumberOfAwakenings += entry.numberOfAwakenings as int;
+      totalAverageLengthAwakening += int.tryParse(entry.averageLengthAwakening) ?? 0;
       totalWakeTime += convertTimeToMinutes(entry.wakeTime);
-      totalScoopsZenbev += entry.scoopsZenbev;
+      totalScoopsZenbev += int.tryParse(entry.scoopsZenbev) ?? 0;
       // Add other fields' calculations
     }
 

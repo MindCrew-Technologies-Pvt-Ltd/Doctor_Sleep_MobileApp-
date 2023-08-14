@@ -166,7 +166,7 @@ class CenteredButtonPage extends StatelessWidget {
                 size: 0.04 * MediaQuery.of(context).size.height,
               ),
               onPressed: () {
-                launch('mailto:company@example.com');
+                launch('mailto:info@zenbev.com');
               },
             ),
 

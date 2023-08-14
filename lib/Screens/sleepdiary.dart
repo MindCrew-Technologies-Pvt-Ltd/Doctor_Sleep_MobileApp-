@@ -60,7 +60,8 @@ class _SleepDiaryState extends State<SleepDiaryPage> {
         final weekNumberNew = weekNumber;
         final bedTime = sleepData?['bedTime'] ?? '';
         final sleepLatency = sleepData?['sleepLatency'] ?? '';
-        final numberOfAwakenings = sleepData?['numberOfAwakenings'] ?? '';
+        final numberOfAwakenings = sleepData?['numberOfAwakenings'];
+        final int parsedNumberOfAwakenings = numberOfAwakenings is int ? numberOfAwakenings :  0;
         final averageLengthAwakening = sleepData?['averageLengthAwakening'] ?? '';
         final wakeTime = sleepData?['wakeTime'] ?? '';
         final scoopsZenbev = sleepData?['scoopsZenbev'] ?? '';
@@ -70,7 +71,7 @@ class _SleepDiaryState extends State<SleepDiaryPage> {
           weekNumber: weekNumberNew,
           bedTime: bedTime,
           sleepLatency: sleepLatency,
-          numberOfAwakenings: numberOfAwakenings,
+          numberOfAwakenings: parsedNumberOfAwakenings,
           averageLengthAwakening: averageLengthAwakening,
           wakeTime: wakeTime,
           scoopsZenbev: scoopsZenbev,
@@ -93,8 +94,8 @@ class _SleepDiaryState extends State<SleepDiaryPage> {
 
 // Inside your _loadDataFromDatabase method
   void _loadDataFromDatabase() async {
-    // DateTime currentDate = DateTime.now();
-    // DateTime weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
+     // DateTime currentDate = DateTime.now();
+     // DateTime weekStartDate = currentDate.subtract(Duration(days: currentDate.weekday - 1));
 
     for (int i = 0; i < 7; i++) {
       List<Map<String, dynamic>>? sleepDataList = await dbHelper.getSleepDataByWeekAndContainer(weekNumber);
@@ -573,6 +574,7 @@ class _SleepDiaryState extends State<SleepDiaryPage> {
 
     // If sleepData is empty, try to fetch data from the database based on the weekNumber and containerIndex
     if (sleepData.isEmpty) {
+
       dbHelper.getSleepDataByWeekAndContainer(weekNumber).then((data) {
         print('data[0]number_of_awakenings -> $data');
         if (data != null && data.isNotEmpty) {
