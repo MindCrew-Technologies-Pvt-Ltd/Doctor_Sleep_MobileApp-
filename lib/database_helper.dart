@@ -1,15 +1,14 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'Screens/sleep_data.dart';
 
-import 'Screens/SleepData.dart';
+class SleepDataDatabase {
 
+  static final SleepDataDatabase _instance = SleepDataDatabase._internal();
 
-class DatabaseHelper {
-  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory SleepDataDatabase() => _instance;
 
-  factory DatabaseHelper() => _instance;
-
-  DatabaseHelper._internal();
+  SleepDataDatabase._internal();
 
   static Database? _database;
 
@@ -29,109 +28,105 @@ class DatabaseHelper {
       path,
       version: 1,
       onCreate: (db, version) async {
-        await db.execute('''
-          CREATE TABLE sleep_data (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            week_number INTEGER,
-            bed_time TEXT,
-            sleep_latency TEXT,
-            number_of_awakenings INTEGER,
-            average_length_awakening INTEGER,
-            wake_time TEXT,
-            scoops_zenbev INTEGER,
-            sleep_date TEXT NOT NULL
-          )
-        ''');
+        await db.execute(
+          'CREATE TABLE sleep_data(id INTEGER PRIMARY KEY AUTOINCREMENT, bedTime TEXT, sleepLatency INTEGER, numAwakenings INTEGER, avgLengthOfAwakening INTEGER, wakeTime TEXT, scoopsOfZenbev INTEGER, date TEXT)',
+        );
       },
     );
   }
 
-  /* Future<int?> saveSleepData(SleepData sleepData) async {
-    final Database? db = await database;
+  Future<bool> insertSleepData(SleepData data) async {
+    try {
+      final Database? db = await database; // Await the database initialization
 
-    // Check if data already exists for the given week number
-    List<Map<String, dynamic>> existingData = await db?.query(
-      'sleep_data',
-      where: 'week_number = ?',
-      whereArgs: [sleepData.weekNumber],
-    ) ?? [];
+      if (db == null) {
+        print('_database is null, cannot insert data.');
+        return false;
+      }
 
-    if (existingData.isNotEmpty) {
-      // Data already exists, update it
-      updateOrInsertSleepData(sleepData.weekNumber, sleepData);
-    } else {
-      // Data doesn't exist, insert it
-      return await db?.insert('sleep_data', sleepData.toMap());
+      print(data.toMap());
+
+      final int insertedRows = await db.insert(
+        'sleep_data',
+        data.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+
+      if (insertedRows > 0) {
+        print('Data inserted successfully.');
+        return true;
+      } else {
+        print('Data insertion failed.');
+        return false;
+      }
+    } catch (e) {
+      print('Error inserting data: $e');
+      return false;
     }
-  }*/
-  Future<int?> saveSleepData(SleepData sleepData) async {
-    final Database? db = await database;
+  }
 
-    // Check if data already exists for the given week number
-    List<Map<String, dynamic>> existingData = await db?.query(
-      'sleep_data',
-      where: 'week_number = ?',
-      whereArgs: [sleepData.weekNumber],
-    ) ?? [];
+  Future<void> resetData() async {
+    try {
+      final Database? db = await database;
 
-    if (existingData.isNotEmpty) {
-      // Data already exists, update it
-      updateOrInsertSleepData(sleepData.weekNumber, sleepData);
-    } else {
-      // Data doesn't exist, insert it
-      return await db?.insert('sleep_data', sleepData.toMap());
+      if (db == null) {
+        print('_database is null, cannot reset data.');
+        return;
+      }
+
+      await db.delete('sleep_data'); // Delete all rows from the table
+      print('Data reset successful.');
+    } catch (e) {
+      print('Error resetting data: $e');
     }
-
-    // Return null if data was updated or inserted successfully
-    return null;
   }
 
-
-  Future<List<Map<String, dynamic>>?> getSleepData() async {
-    final Database? db = await database;
-    return await db?.query('sleep_data');
-  }
-
-  Future<List<Map<String, dynamic>>?> getSleepDataByWeek(int weekNumber) async {
-    final Database? db = await database;
-    return await db?.query('sleep_data', where: 'week_number = ?', whereArgs: [weekNumber]);
-  }
-
-  Future<List<Map<String, dynamic>>?> getSleepDataByWeekAndContainer(int weekNumber) async {
-    final Database? db = await database;
-    return await db?.query('sleep_data', where: 'week_number = ?', whereArgs: [weekNumber]);
-  }
-
-  Future<void> updateOrInsertSleepData(int weekNumber, SleepData sleepData) async {
-    final Database? db = await database;
-
-    // Delete existing data for the given weekNumber
-    await db?.delete('sleep_data', where: 'week_number = ?', whereArgs: [weekNumber]);
-
-    // Insert the updated data
-    await db?.insert(
-      'sleep_data',
-      sleepData.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-  Future<List<SleepData>> getAllSleepData() async {
-    final Database? db = await database;
-    List<Map<String, dynamic>> maps = await db?.query('sleep_data') ?? [];
-    print("Fetched sleep data from the database: $maps");
-    return List.generate(maps.length, (index) {
+  Future<List<SleepData>> getSleepData() async {
+    final List<Map<String, dynamic>> maps = await _database!.query('sleep_data');
+    return List.generate(maps.length, (i) {
       return SleepData(
-        id: maps[index]['id'] ,
-        weekNumber: maps[index]['week_number'] ,
-        bedTime: maps[index]['bed_time'] as String,
-        sleepLatency: maps[index]['sleep_latency'] ,
-        numberOfAwakenings: maps[index]['number_of_awakenings'] ,
-        averageLengthAwakening: maps[index]['average_length_awakening'] ,
-        wakeTime: maps[index]['wake_time'] ,
-        scoopsZenbev: maps[index]['scoops_zenbev'] ,
-        sleepDate: maps[index]['sleep_date'] ,
+        id: maps[i]['id'],
+        bedTime: maps[i]['bedTime'],
+        sleepLatency: maps[i]['sleepLatency'],
+        numAwakenings: maps[i]['numAwakenings'],
+        avgLengthOfAwakening: maps[i]['avgLengthOfAwakening'],
+        wakeTime: maps[i]['wakeTime'],
+        scoopsOfZenbev: maps[i]['scoopsOfZenbev'],
+        date: maps[i]['date'],
       );
     });
+  }
+
+  Future<List<SleepData>> getSortedSleepDataByDate() async {
+    try {
+      final Database? db = await database;
+
+      if (db == null) {
+        print('_database is null, cannot retrieve data.');
+        return [];
+      }
+
+      final List<Map<String, dynamic>> maps = await db.query(
+        'sleep_data',
+        orderBy: 'date ASC', // Order by date in ascending order
+      );
+
+      return List.generate(maps.length, (i) {
+        return SleepData(
+          id: maps[i]['id'],
+          bedTime: maps[i]['bedTime'],
+          sleepLatency: maps[i]['sleepLatency'],
+          numAwakenings: maps[i]['numAwakenings'],
+          avgLengthOfAwakening: maps[i]['avgLengthOfAwakening'],
+          wakeTime: maps[i]['wakeTime'],
+          scoopsOfZenbev: maps[i]['scoopsOfZenbev'],
+          date: maps[i]['date'],
+        );
+      });
+    } catch (e) {
+      print('Error retrieving sorted data: $e');
+      return [];
+    }
   }
 
 }

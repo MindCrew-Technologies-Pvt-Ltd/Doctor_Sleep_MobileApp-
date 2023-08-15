@@ -1,3 +1,4 @@
+import 'package:doctor_sleep/Screens/sleep_dairy.dart';
 import 'package:doctor_sleep/Screens/sleepdiary.dart';
 import 'package:doctor_sleep/Screens/weekelysummary.dart';
 import 'package:doctor_sleep/constants/color.dart';
@@ -64,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SleepDiaryPage()),
+                            MaterialPageRoute(builder: (context) => SleepDataEntryScreen()),
                           );
                         },
                         child: Text(Strings.sleepdiary),
@@ -77,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => WeekelySheet()),
+                            MaterialPageRoute(builder: (context) => SleepDataEntryScreen()),
                           );// Add functionality for the new button
                         },
                         child: Text(Strings.button2),

@@ -3,45 +3,59 @@ import 'package:fl_chart/fl_chart.dart';
 
 import '../constants/color.dart';
 import '../constants/string.dart';
+import '../database_helper.dart';
+import 'sleep_data.dart';
 
 class Graphs extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          Strings.appbargraph,
-        ),
-        backgroundColor: AppColors.primaryColor,
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-
-          child: Column(
-            children: [
-
-              GraphBox(
-                title: Strings.graph1title,
-                child: SleepLatencyScatterPlot(),
+    return FutureBuilder<List<SleepData>>(
+      future: SleepDataDatabase().getSortedSleepDataByDate(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Data is still loading
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // An error occurred while fetching data
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // Data fetched successfully
+          List<SleepData> sortedSleepData = snapshot.data!;
+          print("object=> ${sortedSleepData.toList()[0].toMap()}");
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                Strings.appbargraph,
               ),
-              SizedBox(height: 20),
-
-              GraphBox(
-                title: Strings.graph2title,
-                child: SleepEfficiencyScatterPlot(),
+              backgroundColor: AppColors.primaryColor,
+              centerTitle: true,
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    GraphBox(
+                      title: Strings.graph1title,
+                      child: SleepLatencyScatterPlot(sortedSleepData),
+                    ),
+                    SizedBox(height: 20),
+                    GraphBox(
+                      title: Strings.graph2title,
+                      child: SleepEfficiencyScatterPlot(sortedSleepData),
+                    ),
+                    SizedBox(height: 20),
+                    GraphBox(
+                      title: Strings.graph3title,
+                      child: TSTAndTIBScatterPlot(sortedSleepData),
+                    ),
+                  ],
+                ),
               ),
-              SizedBox(height: 20),
-              GraphBox(
-                title: Strings.graph3title,
-                child: TSTAndTIBScatterPlot(),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
+          );
+        }
+      },
     );
   }
 }
@@ -79,60 +93,21 @@ class GraphBox extends StatelessWidget {
 }
 
 class SleepLatencyScatterPlot extends StatelessWidget {
+  final List<SleepData> sortedSleepData;
+
+  SleepLatencyScatterPlot(this.sortedSleepData);
 
   @override
   Widget build(BuildContext context) {
-
-    List<FlSpot> sleepLatencyData = [
-      FlSpot(1, 360), // 1 week = 360 minutes
-      FlSpot(2, 420), // 2 weeks = 420 minutes
-      FlSpot(3, 480), // 3 weeks = 480 minutes
-      FlSpot(4, 540), // 4 weeks = 540 minutes
-      // Add more data points as needed
-    ];
-
     return AspectRatio(
       aspectRatio: 1.7,
       child: LineChart(
         LineChartData(
           lineBarsData: [
             LineChartBarData(
-              spots: sleepLatencyData,
-              isCurved: true,
-              dotData: FlDotData(show: true),
-            ),
-          ],
-          titlesData: FlTitlesData(
-            leftTitles: SideTitles(showTitles: true),
-            bottomTitles: SideTitles(showTitles: true,),
-
-          ),
-        ),
-      ),
-    );
-}
-}
-
-class SleepEfficiencyScatterPlot extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    List<FlSpot> sleepEfficiencyData = [
-
-      FlSpot(1, 85),
-      FlSpot(2, 90),
-      FlSpot(3, 80),
-      FlSpot(4, 75),
-
-      // Add more data points as needed
-    ];
-
-    return AspectRatio(
-      aspectRatio: 1.7,
-      child: LineChart(
-        LineChartData(
-          lineBarsData: [
-            LineChartBarData(
-              spots: sleepEfficiencyData,
+              spots: sortedSleepData.map((data) {
+                return FlSpot(data.id!.toDouble(), data.sleepLatency.toDouble());
+              }).toList(),
               isCurved: true,
               dotData: FlDotData(show: true),
             ),
@@ -140,6 +115,40 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
           titlesData: FlTitlesData(
             leftTitles: SideTitles(showTitles: true),
             bottomTitles: SideTitles(showTitles: true),
+            topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
+            rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SleepEfficiencyScatterPlot extends StatelessWidget {
+  final List<SleepData> sortedSleepData;
+
+  SleepEfficiencyScatterPlot(this.sortedSleepData);
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: 1.7,
+      child: LineChart(
+        LineChartData(
+          lineBarsData: [
+            LineChartBarData(
+              spots: sortedSleepData.map((data) {
+                return FlSpot(data.id!.toDouble(), data.sleepEfficiency.toDouble());
+              }).toList(),
+              isCurved: true,
+              dotData: FlDotData(show: true),
+            ),
+          ],
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(showTitles: true),
+            topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
+            rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
           ),
         ),
       ),
@@ -148,37 +157,28 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
 }
 
 class TSTAndTIBScatterPlot extends StatelessWidget {
+  final List<SleepData> sortedSleepData;
+
+  TSTAndTIBScatterPlot(this.sortedSleepData);
+
   @override
   Widget build(BuildContext context) {
-    List<FlSpot> tstData = [
-      FlSpot(1, 420), // 1 week = 420 minutes
-      FlSpot(2, 450), // 2 weeks = 450 minutes
-      FlSpot(3, 480), // 3 weeks = 480 minutes
-      FlSpot(4, 510), // 4 weeks = 510 minutes
-
-      // Add more data points as needed
-    ];
-
-    List<FlSpot> tibData = [
-      FlSpot(1, 480), // 1 week = 480 minutes
-      FlSpot(2, 510), // 2 weeks = 510 minutes
-      FlSpot(3, 540), // 3 weeks = 540 minutes
-      FlSpot(4, 570), // 4 weeks = 570 minutes
-      // Add more data points as needed
-    ];
-
     return AspectRatio(
       aspectRatio: 1.7,
       child: LineChart(
         LineChartData(
           lineBarsData: [
             LineChartBarData(
-              spots: [FlSpot(0, 0), ...tstData],
+              spots: sortedSleepData.map((data) {
+                return FlSpot(data.id!.toDouble(), data.totalSleepTime.toDouble());
+              }).toList(),
               isCurved: true,
               dotData: FlDotData(show: true),
             ),
             LineChartBarData(
-              spots: [FlSpot(0, 0), ...tibData],
+              spots: sortedSleepData.map((data) {
+                return FlSpot(data.id!.toDouble(), data.timeInBed.toDouble());
+              }).toList(),
               isCurved: true,
               dotData: FlDotData(show: true),
             ),
@@ -186,10 +186,11 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
           titlesData: FlTitlesData(
             leftTitles: SideTitles(showTitles: true),
             bottomTitles: SideTitles(showTitles: true),
+            topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
+            rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
           ),
         ),
       ),
     );
   }
 }
-                  
