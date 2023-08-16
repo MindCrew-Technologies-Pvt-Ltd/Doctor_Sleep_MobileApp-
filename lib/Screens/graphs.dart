@@ -126,7 +126,15 @@ class SleepLatencyScatterPlot extends StatelessWidget {
           ],
           titlesData: FlTitlesData(
             leftTitles: SideTitles(showTitles: true),
-            bottomTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTitles: (value) {
+                if (value % 1 == 0) {
+                  return value.toString();
+                }
+                return '';
+              },
+            ),
             topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
             rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
           ),
@@ -160,7 +168,15 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
           leftTitles: SideTitles(
     showTitles: true,
     reservedSize: 28),
-            bottomTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTitles: (value) {
+                if (value % 1 == 0) {
+                  return value.toString();
+                }
+                return '';
+              },
+            ),
             topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
             rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
           ),
@@ -199,7 +215,15 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
           ],
           titlesData: FlTitlesData(
             leftTitles: SideTitles(showTitles: true),
-            bottomTitles: SideTitles(showTitles: true),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              getTitles: (value) {
+                if (value % 1 == 0) {
+                  return value.toString();
+                }
+                return '';
+              },
+            ),
             topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
             rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
           ),

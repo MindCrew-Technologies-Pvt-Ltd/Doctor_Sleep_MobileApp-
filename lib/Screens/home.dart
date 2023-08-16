@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
           ),
           Positioned(
             top: 120.0,
-            left: 28,
+            left: 30,
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,13 +52,13 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CircularContainerWithNumber(number: '1', text: Strings.tap1),
-                      SizedBox(height: 10), // Add spacing between the circular containers
+                      SizedBox(height: 15), // Add spacing between the circular containers
                       CircularContainerWithNumber(number: '2', text: Strings.tap2),
-                      SizedBox(height: 10),
+                      SizedBox(height: 15),
                       CircularContainerWithNumber(number: '3', text: Strings.tap3),
                     ],
                   ),
-                  SizedBox(height: 20), // Add spacing between circular container 3 and the button
+                  SizedBox(height: 30), // Add spacing between circular container 3 and the button
                   Row(
                     children: [
                       ElevatedButton(
@@ -73,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
                       ),
-                      SizedBox(width: 20), // Add spacing between Sleep Diary button and the new button
+                      SizedBox(width: 26), // Add spacing between Sleep Diary button and the new button
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -103,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
                       ),
-                      SizedBox(width: 14), // Add spacing between New Button 2 and New Button 3
+                      SizedBox(width: 20), // Add spacing between New Button 2 and New Button 3
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(

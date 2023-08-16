@@ -99,7 +99,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text('Error'),
-                            content: Text('Cannot insert same date data again.'),
+                            content: Text('Cannot Insert Same Date Data Again.'),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -162,11 +162,15 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
       },
       decoration: InputDecoration(
         labelText: 'Selected Date',
+        labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
         suffixIcon: IconButton(
           onPressed: () {
             _selectDate(context);
           },
-          icon: Icon(Icons.calendar_today),
+          icon: Icon(Icons.calendar_today, color: AppColors.primaryColor), // Change icon color
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor), // Change focused border color
         ),
       ),
     );
@@ -176,26 +180,51 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
     return TextFormField(
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
         suffixIcon: IconButton(
           onPressed: () {
-            _selectTime(context, time, onChanged, controller); // Pass the controller here
+            _selectTime(context, time, onChanged, controller);
           },
-          icon: Icon(Icons.access_time),
+          icon: Icon(Icons.access_time, color: AppColors.primaryColor), // Change icon color
+        ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor), // Change focused border color
         ),
       ),
-      controller: controller, // Bind the controller
+      controller: controller,
       readOnly: true,
     );
   }
 
-
   Widget buildTextField(TextEditingController controller, String label) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: label),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: AppColors.primaryColor), // Change focused border color
+        ),
+        // Apply the custom text style here
+        // You can adjust the color and other properties as needed
+        // Example: TextStyle(color: Colors.blue)
+        // Example: TextStyle(color: Color(0xFFE57373))
+        // Example: TextStyle(color: Colors.red, fontSize: 16),
+        // Example: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+        // ...
+        // For changing text color, you can use the color property
+        // of the TextStyle class.
+        // For example: TextStyle(color: Colors.blue)
+        // ...
+        // Note: You can also set the text color via the style property
+        // of the TextFormField widget if needed.
+        // Example: style: TextStyle(color: Colors.blue),
+        // ...
+      ),
       keyboardType: TextInputType.number,
     );
   }
+
 
   void _showResetConfirmationDialog() {
     showDialog(
@@ -234,6 +263,17 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
       initialDate: selectedDate,
       firstDate: currentDate, // Set minDate to currentDate
       lastDate: maxDate,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: AppColors.primaryColor, // Change the primary color of the date picker
+            // accentColor: AppColors.primaryColor, // Change the accent color of the date picker
+            colorScheme: ColorScheme.light(primary: AppColors.primaryColor), // Change the color scheme
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), // Adjust button colors
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (picked != null) {
@@ -246,13 +286,19 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
 
 
 
+
   Future<void> _selectTime(BuildContext context, TimeOfDay currentTime, ValueChanged<TimeOfDay> onChanged, TextEditingController controller) async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
       initialTime: currentTime,
       builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false), // Force 24-hour format
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: AppColors.primaryColor, // Change the primary color of the time picker
+            // accentColor: AppColors.primaryColor, // Change the accent color of the time picker
+            colorScheme: ColorScheme.light(primary: AppColors.primaryColor), // Change the color scheme
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), // Adjust button colors
+          ),
           child: child!,
         );
       },
@@ -267,5 +313,6 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
       controller.text = formattedTime;
     }
   }
+
 
 }
