@@ -21,6 +21,18 @@ class Graphs extends StatelessWidget {
         } else {
           // Data fetched successfully
           List<SleepData> sortedSleepData = snapshot.data!;
+          if (sortedSleepData.isEmpty) {
+            return Center(
+              child: Text('Data not inserted yet',
+                style: TextStyle(
+                  fontSize: 20, // Adjust the font size as needed
+                   // fontWeight: FontWeight.bold, // You can adjust the font weight
+                  color: Colors.white, // You can adjust the color
+                ),
+              ),
+            );
+          }
+
           print("object=> ${sortedSleepData.toList()[0].toMap()}");
           return Scaffold(
             appBar: AppBar(
@@ -106,7 +118,7 @@ class SleepLatencyScatterPlot extends StatelessWidget {
           lineBarsData: [
             LineChartBarData(
               spots: sortedSleepData.map((data) {
-                return FlSpot(data.id!.toDouble(), data.sleepLatency.toDouble());
+                return FlSpot(data.id!.toDouble(), data.sleepLatency!.toDouble());
               }).toList(),
               isCurved: true,
               dotData: FlDotData(show: true),
@@ -145,7 +157,9 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
             ),
           ],
           titlesData: FlTitlesData(
-            leftTitles: SideTitles(showTitles: true),
+          leftTitles: SideTitles(
+    showTitles: true,
+    reservedSize: 28),
             bottomTitles: SideTitles(showTitles: true),
             topTitles: SideTitles(showTitles: false), // Add this line to hide top titles
             rightTitles: SideTitles(showTitles: false), // Add this line to hide right titles
