@@ -1,4 +1,5 @@
 /*
+
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
@@ -18,7 +19,7 @@ class WeekelySheet extends StatefulWidget {
 }
 
 class _WeekelySheetState extends State<WeekelySheet> {
-  DatabaseHelper dbHelper = DatabaseHelper();
+
   List<SleepData> sleepDataList = [];
   Map<int, List<SleepData>> groupedData = {};
 
@@ -30,26 +31,26 @@ class _WeekelySheetState extends State<WeekelySheet> {
   }
 
   _loadSleepData() async {
-    List<SleepData> dataList =  dbHelper.getAllSleepData() as List<SleepData>;
-    groupedData = groupSleepDataByWeek(dataList);
+    // List<SleepData> dataList =  dbHelper.getAllSleepData() as List<SleepData>;
+    // groupedData = groupSleepDataByWeek(dataList);
 
-    setState(() {
-      sleepDataList = dataList;
-    });
+    // setState(() {
+    //   // sleepDataList = dataList;
+    // });
   }
 
-  Map<int, List<SleepData>> groupSleepDataByWeek(List<SleepData> dataList) {
-    Map<int, List<SleepData>> result = {};
-
-    for (var sleepData in dataList) {
-      if (!result.containsKey(sleepData.weekNumber)) {
-        result[sleepData.weekNumber] = [];
-      }
-      result[sleepData.weekNumber]!.add(sleepData);
-    }
-
-    return result;
-  }
+  // Map<int, List<SleepData>> groupSleepDataByWeek(List<SleepData> dataList) {
+  //   Map<int, List<SleepData>> result = {};
+  //
+  //   for (var sleepData in dataList) {
+  //     if (!result.containsKey(sleepData.weekNumber)) {
+  //       result[sleepData.weekNumber] = [];
+  //     }
+  //     result[sleepData.weekNumber]!.add(sleepData);
+  //   }
+  //
+  //   return result;
+  // }
 
   Map<String, String> calculateWeeklyAverages(List<SleepData> weekData) {
     if (weekData.isEmpty) return {};
@@ -62,15 +63,15 @@ class _WeekelySheetState extends State<WeekelySheet> {
     int totalScoopsZenbev = 0;
     // Calculate other fields as needed
 
-    for (var entry in weekData) {
-      totalBedTime += convertTimeToMinutes(entry.bedTime);
-      totalSleepLatencyInMinutes += convertTimeToMinutes(entry.sleepLatency);
-      totalNumberOfAwakenings += entry.numberOfAwakenings as int;
-      totalAverageLengthAwakening += int.tryParse(entry.averageLengthAwakening) ?? 0;
-      totalWakeTime += convertTimeToMinutes(entry.wakeTime);
-      totalScoopsZenbev += int.tryParse(entry.scoopsZenbev) ?? 0;
-      // Add other fields' calculations
-    }
+    // for (var entry in weekData) {
+    //   totalBedTime += convertTimeToMinutes(entry.bedTime);
+    //   totalSleepLatencyInMinutes += convertTimeToMinutes(entry.sleepLatency);
+    //   totalNumberOfAwakenings += entry.numberOfAwakenings as int;
+    //   totalAverageLengthAwakening += int.tryParse(entry.averageLengthAwakening) ?? 0;
+    //   totalWakeTime += convertTimeToMinutes(entry.wakeTime);
+    //   totalScoopsZenbev += int.tryParse(entry.scoopsZenbev) ?? 0;
+    //   // Add other fields' calculations
+    // }
 
     double averageBedTime = totalBedTime / weekData.length;
     double averageSleepLatencyInMinutes = totalSleepLatencyInMinutes / weekData.length;
@@ -326,3 +327,165 @@ DataColumn buildCustomDataColumn(String label) {
 }
 
 */
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // Import for date formatting
+
+import '../constants/color.dart';
+import '../constants/string.dart';
+import '../database_helper.dart';
+import 'sleep_data.dart';
+
+class WeekelySheet extends StatefulWidget {
+  @override
+  _WeekelySheetState createState() => _WeekelySheetState();
+}
+
+class _WeekelySheetState extends State<WeekelySheet> {
+  int currentDay = 1;
+  Map<int, SleepData> sleepEntryByDay = {}; // Keep one entry per day
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch sleep entries from the database and update the map
+    _fetchSleepEntries();
+  }
+
+  _fetchSleepEntries() async {
+    try {
+      List<SleepData> entries = await SleepDataDatabase().getSortedSleepDataByDate();
+      // Organize entries by day
+      for (var entry in entries) {
+        DateTime date = DateTime.parse(entry.date); // Parse the date string to DateTime
+        int day = date.day; // Extract the day from the DateTime
+        sleepEntryByDay[day] ??= entry;
+      }
+
+      setState(() {});
+    } catch (e) {
+      print('Error fetching sleep entries: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<DataColumn> customColumns = [
+      buildCustomDataColumn('BT'),
+      buildCustomDataColumn('SL'),
+      buildCustomDataColumn('AN'),
+      buildCustomDataColumn('AL'),
+      buildCustomDataColumn('WT'),
+      buildCustomDataColumn('ZS'),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(Strings.appbarSS),
+        backgroundColor: AppColors.primaryColor,
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(top: 17.0, left: 10.0, right: 10.0),
+          child: Column(
+            children: [
+              Container(
+                color: AppColors.summaryColor,
+                height: 230,
+                width: 370,
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                  Strings.textss,
+                  style: TextStyle(fontSize: 14),
+                ),
+              ),
+              SizedBox(height: 8),
+              Column(
+                children: (() {
+                  final entries = sleepEntryByDay.entries.toList();
+
+                  List<Widget> widgets = [];
+
+                  for (int dayIndex = 0; dayIndex < entries.length; dayIndex++) {
+                    final entry = entries[dayIndex];
+                    final day = entry.key;
+                    final sleepEntry = entry.value;
+
+                    if (sleepEntry != null) {
+                      final serialNumber = dayIndex + 1;
+
+                      widgets.add(
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: [
+                              Text('Day $serialNumber - ${_getFormattedDate(sleepEntry.date)}'),
+                              DataTable(
+                                columnSpacing: 8.0,
+                                columns: customColumns,
+                                rows: [generateDataRow(sleepEntry)].toList(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  }
+
+                  return widgets;
+                })(),
+
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  DataRow generateDataRow(SleepData entry) {
+    return DataRow(
+      cells: [
+        entry.bedTime,
+        entry.sleepLatency.toString(),
+        entry.numAwakenings.toString(),
+        entry.avgLengthOfAwakening.toString(),
+        entry.wakeTime,
+        entry.scoopsOfZenbev.toString(),
+      ].map((value) => DataCell(Container(
+        decoration: BoxDecoration(
+          color: AppColors.buttonColor,
+          border: Border.all(color: AppColors.buttonColor, width: 1.0),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 7.0, horizontal: 10.0),
+        child: Center(
+          child: Text(
+            value,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ))).toList(),
+    );
+  }
+
+  DataColumn buildCustomDataColumn(String label) {
+    return DataColumn(
+      label: Container(
+        decoration: BoxDecoration(
+          color: AppColors.buttonColor,
+          border: Border.all(color: AppColors.buttonColor, width: 1.0),
+        ),
+        padding: EdgeInsets.only(left: 20.0, right: 18.0, top: 3, bottom: 3),
+        child: Text(
+          label,
+          style: TextStyle(),
+        ),
+      ),
+    );
+  }
+
+  String _getFormattedDate(String dateString) {
+    DateTime date = DateTime.parse(dateString);
+    return DateFormat('MMM dd, yyyy').format(date); // Customize the date format as needed
+  }
+}

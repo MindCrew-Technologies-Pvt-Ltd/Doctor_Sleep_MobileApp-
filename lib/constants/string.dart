@@ -15,10 +15,10 @@ class Strings{
   static const String register = "Register a new week.";
   static const String savedata = "SAVE DATA";
   static const String Modernize = "Modernize your sleep tracking habits by using the\nDoctor-Developed Zenbev Sleep Calculator";
-  static const String tap1 = "Tap the button to register a\n new week.";
+  static const String tap1 = "Tap Enter Sleep Diary Here to\n register and save a new day.";
   static const String tap2 = "Enter sleep data as you\nprogess.";
   static const String tap3 = "Keep track of your sleep habits\nthrough informative graphs.";
-  static const String button2 = "Weekly Summary\n            Sheet";
+  static const String button2 = "     Daily Summary\n            Sheet";
   static const String button3 = "Summary Graphs ";
   static const String button4 = "Acknowledgement";
   static const String appbarA = "ACKNOWLEDGEMENTS";

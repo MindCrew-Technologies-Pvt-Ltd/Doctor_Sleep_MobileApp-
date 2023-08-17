@@ -1,9 +1,9 @@
 import 'package:doctor_sleep/Screens/sleep_dairy.dart';
 import 'package:doctor_sleep/Screens/sleepdiary.dart';
-import 'package:doctor_sleep/Screens/weekelysummary.dart';
 import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
 import '../constants/string.dart';
+import 'Daysummary.dart';
 import 'acknowledgement.dart';
 import 'graphs.dart';
 
@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => SleepDataEntryScreen()),
+                            MaterialPageRoute(builder: (context) => WeekelySheet()),
                           );// Add functionality for the new button
                         },
                         child: Text(Strings.button2),
@@ -86,6 +86,7 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
                       ),
+
                     ],
                   ),
                   SizedBox(height: 10,), // Add spacing between the new button and the row of new buttons
@@ -145,7 +146,7 @@ class CircularContainerWithNumber extends StatelessWidget {
       children: [
         Container(
           width: 70,
-          height: 70,
+          height: 75,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.buttonColor,

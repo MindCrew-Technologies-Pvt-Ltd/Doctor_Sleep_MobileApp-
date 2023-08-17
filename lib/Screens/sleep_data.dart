@@ -17,6 +17,7 @@ class SleepData {
     required this.wakeTime,
     required this.scoopsOfZenbev,
     required this.date,
+
   });
 
   double get sleepEfficiency {

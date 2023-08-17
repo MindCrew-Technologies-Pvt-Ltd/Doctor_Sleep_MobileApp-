@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -23,7 +24,7 @@ class Graphs extends StatelessWidget {
           List<SleepData> sortedSleepData = snapshot.data!;
           if (sortedSleepData.isEmpty) {
             return Center(
-              child: Text('Data not inserted yet',
+              child: Text('No Data Available',
                 style: TextStyle(
                   fontSize: 20, // Adjust the font size as needed
                    // fontWeight: FontWeight.bold, // You can adjust the font weight
@@ -229,6 +230,287 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+*/
+import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+import '../constants/color.dart';
+import '../constants/string.dart';
+import '../database_helper.dart';
+import 'sleep_data.dart';
+
+class Graphs extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<SleepData>>(
+      future: SleepDataDatabase().getSortedSleepDataByDate(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          List<SleepData> sortedSleepData = snapshot.data!;
+          if (sortedSleepData.length == 1 || sortedSleepData.isEmpty) {
+            return Center(
+              child: Text(
+                'No Data Available',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            );
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(Strings.appbargraph),
+              backgroundColor: AppColors.primaryColor,
+              centerTitle: true,
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    GraphBox(
+                      title: Strings.graph1title,
+                      child: SleepLatencyScatterPlot(sortedSleepData),
+                    ),
+                    SizedBox(height: 20),
+                    GraphBox(
+                      title: Strings.graph2title,
+                      child: SleepEfficiencyScatterPlot(sortedSleepData),
+                    ),
+                    SizedBox(height: 20),
+                    GraphBox(
+                      title: Strings.graph3title,
+                      child: TSTAndTIBScatterPlot(sortedSleepData),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class GraphBox extends StatelessWidget {
+  final String title;
+  final Widget child;
+
+  GraphBox({required this.title, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 10),
+          child,
+        ],
+      ),
+    );
+  }
+}
+
+class SleepLatencyScatterPlot extends StatelessWidget {
+  final List<SleepData> sortedSleepData;
+
+  SleepLatencyScatterPlot(this.sortedSleepData);
+
+  @override
+  Widget build(BuildContext context) {
+    List<FlSpot> spots = sortedSleepData
+        .where((data) =>
+    data.id != null &&
+        data.sleepLatency != null &&
+        data.sleepLatency!.isFinite &&
+        !data.sleepLatency!.isNaN)
+        .map((data) =>
+        FlSpot(data.id!.toDouble(), data.sleepLatency!.toDouble()))
+        .toList();
+
+    // Replace invalid values with a placeholder value
+    spots = spots.map((spot) {
+      if (spot.y.isNaN || spot.y.isInfinite) {
+        return FlSpot(spot.x, 0); // Use 0 as a placeholder value
+      }
+      return spot;
+    }).toList();
+
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 1.7,
+          child: LineChart(
+            LineChartData(
+              lineBarsData: [
+                LineChartBarData(
+                  spots: spots,
+                  isCurved: true,
+                  dotData: FlDotData(show: true),
+                ),
+              ],
+              titlesData: FlTitlesData(
+                leftTitles: SideTitles(showTitles: true),
+                bottomTitles: SideTitles(
+                  showTitles: true,
+                  getTitles: (value) {
+                    if (value % 1 == 0) {
+                      return value.toInt().toString();
+                    }
+                    return '';
+                  },
+                ),
+                topTitles: SideTitles(showTitles: false),
+                rightTitles: SideTitles(showTitles: false),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
+      ],
+    );
+  }
+}
+
+class SleepEfficiencyScatterPlot extends StatelessWidget {
+  final List<SleepData> sortedSleepData;
+
+  SleepEfficiencyScatterPlot(this.sortedSleepData);
+
+  @override
+  Widget build(BuildContext context) {
+    List<FlSpot> spots = sortedSleepData
+        .where((data) =>
+    data.id != null &&
+        data.sleepEfficiency != null &&
+        data.sleepEfficiency!.isFinite) // Filter out NaN or infinite values
+        .map((data) =>
+        FlSpot(data.id!.toDouble(), data.sleepEfficiency!.toDouble()))
+        .toList();
+
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 1.7,
+          child: LineChart(
+            LineChartData(
+              lineBarsData: [
+                LineChartBarData(
+                  spots: spots,
+                  isCurved: true,
+                  dotData: FlDotData(show: true),
+                ),
+              ],
+              titlesData: FlTitlesData(
+                leftTitles: SideTitles(showTitles: true, reservedSize: 28),
+                bottomTitles: SideTitles(
+                  showTitles: true,
+                  getTitles: (value) {
+                    if (value % 1 == 0) {
+                      return value.toInt().toString();
+                    }
+                    return '';
+                  },
+                ),
+                topTitles: SideTitles(showTitles: false),
+                rightTitles: SideTitles(showTitles: false),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
+      ],
+    );
+  }
+}
+
+class TSTAndTIBScatterPlot extends StatelessWidget {
+  final List<SleepData> sortedSleepData;
+
+  TSTAndTIBScatterPlot(this.sortedSleepData);
+
+  @override
+  Widget build(BuildContext context) {
+    List<FlSpot> totalSleepTimeSpots = sortedSleepData
+        .where((data) =>
+    data.id != null &&
+        data.totalSleepTime != null &&
+        data.totalSleepTime!.isFinite) // Filter out NaN or infinite values
+        .map((data) =>
+        FlSpot(data.id!.toDouble(), data.totalSleepTime!.toDouble()))
+        .toList();
+
+    List<FlSpot> timeInBedSpots = sortedSleepData
+        .where((data) =>
+    data.id != null &&
+        data.timeInBed != null &&
+        data.timeInBed!.isFinite) // Filter out NaN or infinite values
+        .map((data) => FlSpot(data.id!.toDouble(), data.timeInBed!.toDouble()))
+        .toList();
+
+    return Column(
+      children: [
+        AspectRatio(
+          aspectRatio: 1.7,
+          child: LineChart(
+            LineChartData(
+              lineBarsData: [
+                LineChartBarData(
+                  spots: totalSleepTimeSpots,
+                  isCurved: true,
+                  dotData: FlDotData(show: true),
+                ),
+                LineChartBarData(
+                  spots: timeInBedSpots,
+                  isCurved: true,
+                  dotData: FlDotData(show: true),
+                ),
+              ],
+              titlesData: FlTitlesData(
+                leftTitles: SideTitles(showTitles: true, reservedSize: 28),
+                bottomTitles: SideTitles(
+                  showTitles: true,
+                  getTitles: (value) {
+                    if (value % 1 == 0) {
+                      return value.toInt().toString();
+                    }
+                    return '';
+                  },
+                ),
+                topTitles: SideTitles(showTitles: false),
+                rightTitles: SideTitles(showTitles: false),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
+      ],
     );
   }
 }

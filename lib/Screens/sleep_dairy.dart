@@ -11,6 +11,8 @@ class SleepDataEntryScreen extends StatefulWidget {
 }
 
 class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
+  List<SleepEntry> sleepEntries = [];
+
 
   final SleepDataDatabase database = SleepDataDatabase();
 
@@ -70,7 +72,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
               waketimeController, // Pass the controller here
             ),
 
-            buildTextField(sleepLatencyController, 'Sleep Latency (minutes)'),
+            buildTextField(sleepLatencyController, 'Time to fall asleep (Minutes)'),
             buildTextField(numAwakeningsController, 'Number of Awakenings'),
             buildTextField(avgLengthOfAwakeningController, 'Average Length of Awakening (minutes)'),
             buildTextField(scoopsOfZenbevController, 'Scoops of Zenbev'),
@@ -89,7 +91,33 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                 ),
 
                 ElevatedButton(
-                  onPressed: () async {
+                  onPressed: () async {   // Check if any of the text fields are empty
+                    if (bedtimeController.text.isEmpty ||
+                        waketimeController.text.isEmpty ||
+                        sleepLatencyController.text.isEmpty ||
+                        numAwakeningsController.text.isEmpty ||
+                        avgLengthOfAwakeningController.text.isEmpty ||
+                        scoopsOfZenbevController.text.isEmpty) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Error'),
+                            content: Text('Please Enter the Data'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog
+                                },
+                                child: Text('Ok'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      return; // Stop further processing
+                    }
+
                     final String selectedDateFormatted = DateFormat('yyyy-MM-dd').format(selectedDate);
                     final bool dateExists = await database.isDateAlreadyExists(selectedDateFormatted);
 
@@ -125,7 +153,18 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                       date: DateFormat('yyyy-MM-dd').format(selectedDate),
                     );
 
+                    // Add the sleep data to the list
+                    setState(() {
+                      sleepEntries.add(SleepEntry(
+                          date: sleepData.date,
+                          bedTime: sleepData.bedTime,
+                          wakeTime: sleepData.wakeTime,
+                          timeTakenToFallAsleep: sleepData.sleepLatency,
+                      ));
+                  });
+
                     await database.insertSleepData(sleepData);
+
 
                     setState(() {
                       selectedDate = DateTime.now();
@@ -316,3 +355,18 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
 
 
 }
+
+class SleepEntry {
+  final String date;
+  final String bedTime;
+  final String wakeTime;
+  final int timeTakenToFallAsleep;
+
+  SleepEntry({
+    required this.date,
+    required this.bedTime,
+    required this.wakeTime,
+    required this.timeTakenToFallAsleep,
+  });
+}
+
