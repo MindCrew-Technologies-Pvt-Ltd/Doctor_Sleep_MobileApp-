@@ -419,7 +419,13 @@ class _WeekelySheetState extends State<WeekelySheet> {
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: [
-                              Text('Day $serialNumber - ${_getFormattedDate(sleepEntry.date)}'),
+                              SizedBox(height: 8),
+                              Text(
+                                'Day $serialNumber - ${_getFormattedDate(sleepEntry.date)}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold, // Apply bold font weight
+                                ),
+                              ),
                               DataTable(
                                 columnSpacing: 8.0,
                                 columns: customColumns,
