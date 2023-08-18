@@ -15,7 +15,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.appbarA),
+        title: Text(Strings.appbarA(context)),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -25,7 +25,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
           children: [
             Center(
               child: Text(
-                Strings.citation,
+                Strings.citation(context),
                 style: TextStyle(
                   fontSize: 24,
                   // fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
             Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20), // Add left and right padding
-                child: Text(Strings.textcitation,
+                child: Text(Strings.textcitation(context),
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black,

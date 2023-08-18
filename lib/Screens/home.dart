@@ -12,7 +12,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.Homepage),
+        title: Text(Strings.getLocalized(context, 'HomePage')),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
               child: Text(
-                Strings.cal,
+                Strings.cal(context),
                 style: TextStyle(
                   fontSize: 23,
                 ),
@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    Strings.Modernize,
+                    Strings.Modernize(context),
                     style: TextStyle(),
                     textAlign: TextAlign.start,
                   ),
@@ -51,11 +51,11 @@ class HomeScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircularContainerWithNumber(number: '1', text: Strings.tap1),
+                      CircularContainerWithNumber(number: '1', text: Strings.tap1(context)),
                       SizedBox(height: 15), // Add spacing between the circular containers
-                      CircularContainerWithNumber(number: '2', text: Strings.tap2),
+                      CircularContainerWithNumber(number: '2', text: Strings.tap2(context)),
                       SizedBox(height: 15),
-                      CircularContainerWithNumber(number: '3', text: Strings.tap3),
+                      CircularContainerWithNumber(number: '3', text: Strings.tap3(context)),
                     ],
                   ),
                   SizedBox(height: 30), // Add spacing between circular container 3 and the button
@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => SleepDataEntryScreen()),
                           );
                         },
-                        child: Text(Strings.sleepdiary),
+                        child: Text(Strings.sleepdiary(context)),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
@@ -81,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => SleepDataEntryScreen()),
                           );// Add functionality for the new button
                         },
-                        child: Text(Strings.button2),
+                        child: Text(Strings.button2(context)),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Graphs()),
                           );// Add functionality for New Button 2
                         },
-                        child: Text(Strings.button3),
+                        child: Text(Strings.button3(context)),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
@@ -111,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Acknowledgement()),
                           );
                         },
-                        child: Text(Strings.button4),
+                        child: Text(Strings.button4(context)),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),

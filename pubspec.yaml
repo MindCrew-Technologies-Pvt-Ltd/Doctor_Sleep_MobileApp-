@@ -30,15 +30,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
   sqflite: ^2.0.0
   path_provider: ^2.0.0
   fl_chart: ^0.40.0
   url_launcher: ^6.0.10
-  intl: ^0.17.0
+  intl: ^0.18.0
   flutter_translate: ^3.0.0
   shared_preferences: ^2.0.9
-
-
 
 
 
@@ -56,6 +57,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -67,11 +69,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-#To add assets to your application, add an assets section, like this:
+To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/doctorsleepfront.jpeg
     - assets/images/zenbev.png
     - assets/images/biosential.png
+    - assets/language12/da.json
+    - assets/language12/de.json
+    - assets/language12/fr.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

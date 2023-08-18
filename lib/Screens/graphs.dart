@@ -37,7 +37,7 @@ class Graphs extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                Strings.appbargraph,
+                Strings.appbargraph(context),
               ),
               backgroundColor: AppColors.primaryColor,
               centerTitle: true,
@@ -48,17 +48,17 @@ class Graphs extends StatelessWidget {
                 child: Column(
                   children: [
                     GraphBox(
-                      title: Strings.graph1title,
+                      title: Strings.graph1title(context),
                       child: SleepLatencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph2title,
+                      title: Strings.graph2title(context),
                       child: SleepEfficiencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph3title,
+                      title: Strings.graph3title(context),
                       child: TSTAndTIBScatterPlot(sortedSleepData),
                     ),
                   ],

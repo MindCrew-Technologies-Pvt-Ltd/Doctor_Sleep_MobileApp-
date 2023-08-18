@@ -1,8 +1,11 @@
+
 import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
 import 'Screens/home.dart';
+import 'Screens/localization_helper.dart';
 import 'constants/string.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 void main() {
@@ -10,10 +13,23 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''), // English
+        Locale('de', ''), // Deutsch
+        Locale('da', ''), // Dansk
+        Locale('fr', ''), // Francais
+      ],
+
       home: CenteredButtonPage(),
     );
   }
@@ -23,19 +39,34 @@ class CenteredButtonPage extends StatelessWidget {
   final List<String> languages = ['English', 'Deutsch', 'Dansk', 'Français'];
 
   void showLanguageDialog(BuildContext context) {
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(Strings.buttonmessage),
+          title: Text(Strings.getLocalized(context,"buttonmessage")),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               for (String language in languages)
                 ListTile(
                   title: Text(language),
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(context);
+                    // Example of changing the language
+                    if(language == 'English'){
+                      changeLanguage('en');
+                    }
+                    else if(language == 'Deutsch'){
+                      changeLanguage('de');
+                    }
+                    else if(language == 'Dansk'){
+                      changeLanguage('da');
+                    }
+                    else if(language == 'Français'){
+                      changeLanguage('fr');
+                    }
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -48,7 +79,10 @@ class CenteredButtonPage extends StatelessWidget {
       },
     );
   }
-
+  void changeLanguage(String newLanguageCode) {
+    LocalizationHelper.setLocale(newLanguageCode);
+    LocalizationHelper.initializeLocalization();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +132,7 @@ class CenteredButtonPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          Strings.language,
+                          Strings.language(context),
                           style: TextStyle(
                             fontSize: 0.04 * MediaQuery.of(context).size.height,
                             fontWeight: FontWeight.bold,
@@ -127,7 +161,7 @@ class CenteredButtonPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  Strings.title,
+                  Strings.title(context),
                   style: TextStyle(
                     fontSize: 0.05 * MediaQuery.of(context).size.height,
                     fontWeight: FontWeight.bold,
@@ -144,7 +178,7 @@ class CenteredButtonPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Text(
-                    Strings.docdev,
+                    Strings.docdev(context),
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 0.03 * MediaQuery.of(context).size.height,
