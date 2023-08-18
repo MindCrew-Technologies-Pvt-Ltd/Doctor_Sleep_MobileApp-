@@ -257,7 +257,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
   }
 
   Widget buildTextField(TextEditingController controller, String label) {
-    final inputFormatter = FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*$'));
+    final inputFormatter = FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*$'));
 
     return TextFormField(
       controller: controller,

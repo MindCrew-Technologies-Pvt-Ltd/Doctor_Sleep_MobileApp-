@@ -419,7 +419,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: [
-                              SizedBox(height: 8),
+                              SizedBox(height: 16),
                               Text(
                                 'Day $serialNumber - ${_getFormattedDate(sleepEntry.date)}',
                                 style: TextStyle(

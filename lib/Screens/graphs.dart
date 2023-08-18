@@ -509,6 +509,7 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
                   spots: totalSleepTimeSpots,
                   isCurved: true,
                   dotData: FlDotData(show: true),
+                  colors: [Colors.red],
                 ),
                 LineChartBarData(
                   spots: timeInBedSpots,
