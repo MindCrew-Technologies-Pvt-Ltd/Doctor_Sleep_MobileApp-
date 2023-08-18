@@ -254,7 +254,7 @@ class Graphs extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         } else {
           List<SleepData> sortedSleepData = snapshot.data!;
-          if (sortedSleepData.length < 2 || sortedSleepData.isEmpty) {
+          if (sortedSleepData.length < 3 || sortedSleepData.isEmpty) {
             return Center(
               child: Text(
                 'No Data Available',
