@@ -9,7 +9,6 @@ import '../main.dart';
 const String prefSelectedLanguageCode = "SelectedLanguageCode";
 
 Future<Locale> setLocale(String languageCode) async {
-  print("languageCode $languageCode");
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   await _prefs.setString(prefSelectedLanguageCode, languageCode);
   return _locale(languageCode);
