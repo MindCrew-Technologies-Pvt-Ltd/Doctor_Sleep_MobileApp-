@@ -27,7 +27,7 @@ class LanguageDa extends Languages {
   String get mastersleep => "MESTER SØVN DAGBOG";
 
   @override
-  String get sleepdiary => "Indtast søvndagbog\nher";
+  String get sleepdiary => "Indtast søvndagbog\n            her";
 
   @override
   String get sleepappbar => "INDTAST SØVNDAGBOG HER";
@@ -55,10 +55,10 @@ class LanguageDa extends Languages {
   String get tap3 => "Følg dine søvnevner\nmed informative grafer.";
 
   @override
-  String get button2 => "Daglig\nSammenfatning";
+  String get button2 => "     Daglig\nSammenfatning  ";
 
   @override
-  String get button3 => "         Grafer             ";
+  String get button3 => "         Grafer                ";
 
   @override
   String get button4 => "      Anerkendelse   ";
