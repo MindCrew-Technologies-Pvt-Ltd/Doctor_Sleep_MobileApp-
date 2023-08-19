@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 Languages.of(context)!.cal,
                 style: TextStyle(
-                  fontSize: 23,
+                  fontSize: 21,
                 ),
               ),
             ),
@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => WeekelySheet()),
                           );// Add functionality for the new button
                         },
-                        child: Text(Languages.of(context)!.button2),
+                        child: Text(Languages.of(context)!.button2,),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),

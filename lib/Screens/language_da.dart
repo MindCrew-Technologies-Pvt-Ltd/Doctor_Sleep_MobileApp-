@@ -46,7 +46,7 @@ class LanguageDa extends Languages {
       "Moderniser dine søgesporingsvaner ved at bruge\nUdviklet af læger Zenbev Søvnberegner";
 
   @override
-  String get tap1 => "Tryk på Indtast søvndagbog her,\nfor at registrere og gemme en ny dag.";
+  String get tap1 => "Tryk på Indtast søvndagbog her,\nfor at registrere og gemme en\nny dag.";
 
   @override
   String get tap2 => "Indtast søvndata, mens du\nfremskridter.";
@@ -55,20 +55,19 @@ class LanguageDa extends Languages {
   String get tap3 => "Følg dine søvnevner\nmed informative grafer.";
 
   @override
-  String get button2 => "     Daglig\n    Sammenfatning";
+  String get button2 => "         Daglig\n    Sammenfatning";
 
   @override
-  String get button3 => "Grafer";
+  String get button3 => "             Grafer            ";
 
   @override
-  String get button4 => "Anerkendelse";
+  String get button4 => "      Anerkendelse   ";
 
   @override
   String get appbarA => "ANERKENDELSER";
 
   @override
-  String get citation =>
-      "HENVISNING\n\nProteinkilde tryptofan vs. farmaceutisk\nkvalitet tryptofan som en effektiv behandling for\nkronisk søvnløshed, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
+  String get citation => "CITATION";
 
   @override
   String get appbarSS => "Sammenfatningsark";
@@ -133,6 +132,6 @@ class LanguageDa extends Languages {
 
 
   @override
-  String get textcitation => throw UnimplementedError();
+  String get textcitation => "Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
 
 }

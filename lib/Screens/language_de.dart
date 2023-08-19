@@ -43,32 +43,31 @@ class LanguageDe extends Languages {
 
   @override
   String get Modernize =>
-      "Modernisieren Sie Ihre Schlafverfolgungsgewohnheiten mit dem\nVon Ärzten entwickelten Zenbev Schlafrechner";
+      "Modernisieren Sie lhre Schlaf-Tracking-Gewohnheiten\nmit dem von Ärzten entwickelten Zenbev-Schlafrechner";
 
   @override
-  String get tap1 => "Tippen Sie auf Schlaf-Tagebuch eingeben,\num sich zu registrieren und einen neuen Tag zu speichern.";
+  String get tap1 => "Tippen Sie auf Schlaf-Tagebuch\neingeben,um sich zu registrieren\nund einen neuen Tag zu speichern.";
 
   @override
-  String get tap2 => "Geben Sie Schlafdaten ein, während Sie\nfortschreiten.";
+  String get tap2 => "Geben Sie Schlafdaten ein,\n während Sie fortschreiten.";
 
   @override
-  String get tap3 => "Verfolgen Sie Ihre Schlafgewohnheiten\nmit informativen Grafiken.";
+  String get tap3 => "Verfolgen Sie Ihre\nSchlafgewohnheiten mit\ninformativen Grafiken.";
 
   @override
-  String get button2 => "     Tägliche\n    Zusammenfassung";
+  String get button2 =>"         Tägliche\n    Zusammenfassung";
 
   @override
-  String get button3 => "Grafiken";
+  String get button3 => "        Grafiken       ";
 
   @override
-  String get button4 => "Anerkennung";
+  String get button4 =>  "        Anerkennung         ";
 
   @override
   String get appbarA => "ANERKENNUNGEN";
 
   @override
-  String get citation =>
-      "ZITATION\n\nTryptophanquelle Protein vs. pharmazeutischer\nTryptophan von hoher Qualität als wirksame Behandlung für\ndie chronische Schlaflosigkeit, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
+  String get citation => "ZITAT";
 
   @override
   String get appbarSS => "Zusammenfassungsblatt";
@@ -132,5 +131,5 @@ class LanguageDe extends Languages {
   String get scoopsofzenbev => 'Portionen ZenBev';
 
   @override
-  String get textcitation => throw UnimplementedError();
+  String get textcitation =>"Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
 }

@@ -69,8 +69,7 @@ class LanguageEn extends Languages {
   String get appbarA => "ACKNOWLEDGEMENTS";
 
   @override
-  String get citation =>
-      "CITATION\n\nProtein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
+  String get citation => "CITATION";
 
   @override
   String get appbarSS => "Summary Sheet";
@@ -134,8 +133,11 @@ class LanguageEn extends Languages {
   String get scoopsofzenbev => 'Scoops of ZenBev';
 
   @override
-  // TODO: implement textcitation
-  String get textcitation => throw UnimplementedError();
+
+  String get textcitation =>"Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
+
+
+
 
 }
 

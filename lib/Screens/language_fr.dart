@@ -9,13 +9,13 @@ class LanguageFr extends Languages {
   String get buttonmessage => "Choisissez votre langue";
 
   @override
-  String get title => 'Calculateur de sommeil';
+  String get title => '   Calculateur de\n       sommeil';
 
   @override
   String get docdev => "Développé par des médecins";
 
   @override
-  String get cal => "CALCULATEUR DE SOMMEIL ZENBEV";
+  String get cal =>"CALCULATEUR DE SOMMEIL ZENBEV";
 
   @override
   String get language => "Langue";
@@ -27,7 +27,7 @@ class LanguageFr extends Languages {
   String get mastersleep => "JOURNAL DU SOMMEIL MAÎTRE";
 
   @override
-  String get sleepdiary => "Entrez le journal du sommeil\n           ici";
+  String get sleepdiary => "       Entrez le journal\n        du sommeil ici      ";
 
   @override
   String get sleepappbar => "ENTRER LE JOURNAL DU SOMMEIL ICI";
@@ -43,32 +43,31 @@ class LanguageFr extends Languages {
 
   @override
   String get Modernize =>
-      "Modernisez vos habitudes de suivi du sommeil en utilisant le\nCalculateur de sommeil Zenbev développé par des médecins";
+      "Modernisez vos habitudes de suivi du sommeil en\nutilisant le Calculateur de sommeil Zenbev développé\npar des médecins";
 
   @override
-  String get tap1 => "Appuyez sur Entrer le journal du sommeil ici,\npour vous enregistrer et enregistrer un nouveau jour.";
+  String get tap1 => "Appuyez sur Entrer le journal du\nsommeil ici,pour vous enregistrer\net enregistrer un nouveau jour.";
 
   @override
-  String get tap2 => "Entrez les données de sommeil à mesure que vous\navancez.";
+  String get tap2 => "Entrez les données de sommeil à\nmesure que vous avancez.";
 
   @override
   String get tap3 => "Suivez vos habitudes de sommeil\navec des graphiques informatifs.";
 
   @override
-  String get button2 => "     Résumé\n    quotidien";
+  String get button2 => "Résumé quotidien";
 
   @override
-  String get button3 => "Graphiques";
+  String get button3 => "        Graphiques           ";
 
   @override
-  String get button4 => "Reconnaissance";
+  String get button4 =>    "    Reconnaissance ";
 
   @override
   String get appbarA => "RECONNAISSANCES";
 
   @override
-  String get citation =>
-      "CITATION\n\nSource de protéines tryptophane vs tryptophane\npharmaceutique de qualité en tant que traitement efficace\ncontre l'insomnie chronique, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
+  String get citation => "CITATION";
 
   @override
   String get appbarSS => "Feuille de résumé";
@@ -132,6 +131,6 @@ class LanguageFr extends Languages {
   String get scoopsofzenbev => 'Cuillerées de ZenBev';
 
   @override
-  String get textcitation => throw UnimplementedError();
+  String get textcitation =>"Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
 
 }
