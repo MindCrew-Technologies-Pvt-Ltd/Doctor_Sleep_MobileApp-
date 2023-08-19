@@ -1,8 +1,11 @@
-import 'package:doctor_sleep/constants/color.dart';
+import'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Screens/home.dart';
 import 'constants/string.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 
 void main() {
@@ -12,8 +15,22 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+  LocalJsonLocalization.delegate.directories = ['lib/i18n'];
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      supportedLocales: [
+        const Locale('en', 'US'), // English
+        const Locale('de', 'DE'), // Deutsch
+        // Add other supported locales
+      ],
+      localizationsDelegates: [
+        // delegate from flutter_localization
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        // delegate from localization package.
+        LocalJsonLocalization.delegate,
+      ],
       home: CenteredButtonPage(),
     );
   }
@@ -22,7 +39,8 @@ class MyApp extends StatelessWidget {
 class CenteredButtonPage extends StatelessWidget {
   final List<String> languages = ['English', 'Deutsch', 'Dansk', 'Français'];
 
-  void showLanguageDialog(BuildContext context) {
+  Future<void> showLanguageDialog(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
     showDialog(
       context: context,
       builder: (context) {
@@ -34,7 +52,8 @@ class CenteredButtonPage extends StatelessWidget {
               for (String language in languages)
                 ListTile(
                   title: Text(language),
-                  onTap: () {
+                  onTap: () async {
+                  await prefs.setString('selectedLanguage', language);
                     Navigator.pop(context);
                     Navigator.push(
                       context,
