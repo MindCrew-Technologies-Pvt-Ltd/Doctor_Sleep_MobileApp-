@@ -534,6 +534,7 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
               ),
             ),
           ),
+
         ),
         const SizedBox(height: 10),
         Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
