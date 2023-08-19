@@ -21,8 +21,19 @@ class SleepData {
   });
 
   double get sleepEfficiency {
-    return (totalSleepTime / timeInBed) * 100;
+    if (totalSleepTime.isFinite && timeInBed.isFinite && timeInBed != 0) {
+      double efficiency = (totalSleepTime / timeInBed) * 100;
+      if (efficiency.isFinite) {
+        return efficiency;
+      } else {
+        return 0; // Handle cases where the result is Infinity or NaN
+      }
+    } else {
+      return 0; // Handle NaN or Infinite values gracefully
+    }
   }
+
+
 
   int get totalSleepTime {
     return timeInBed - sleepLatency - (numAwakenings * avgLengthOfAwakening);

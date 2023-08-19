@@ -236,7 +236,6 @@ class CenteredButtonPage extends StatelessWidget {
               ],
             ),
           ),
-
           Positioned(
             top: 0.05 * MediaQuery.of(context).size.height,
             right: 0.03 * MediaQuery.of(context).size.width,

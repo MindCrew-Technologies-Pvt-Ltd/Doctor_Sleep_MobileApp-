@@ -1,6 +1,7 @@
 import 'package:doctor_sleep/Screens/sleep_data.dart';
 import 'package:doctor_sleep/database_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../constants/color.dart';
@@ -12,6 +13,8 @@ class SleepDataEntryScreen extends StatefulWidget {
 }
 
 class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   List<SleepEntry> sleepEntries = [];
 
 
@@ -39,6 +42,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
       appBar: AppBar(
         title: Text(Languages.of(context)!.sleepdiary),
         backgroundColor: AppColors.primaryColor,
@@ -177,7 +181,17 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                       avgLengthOfAwakeningController.clear();
                       scoopsOfZenbevController.clear();
                     });
-                  },
+                    // Show a success SnackBar
+                    // Show a success SnackBar
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Data Saved Successfully'),
+                        duration: Duration(seconds: 2), // You can adjust the duration as needed
+                      ),
+                    );
+    },
+
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor, // Change this color to your desired color
                   ),
@@ -217,51 +231,46 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
   }
 
   Widget buildTimePickerFormField(String label, TimeOfDay time, ValueChanged<TimeOfDay> onChanged, TextEditingController controller) {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
-        suffixIcon: IconButton(
-          onPressed: () {
-            _selectTime(context, time, onChanged, controller);
-          },
-          icon: Icon(Icons.access_time, color: AppColors.primaryColor), // Change icon color
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryColor), // Change focused border color
+    return GestureDetector(
+      onTap: () {
+        _selectTime(context, time, onChanged, controller);
+      },
+      child: AbsorbPointer(
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
+            suffixIcon: IconButton(
+              onPressed: () {
+                _selectTime(context, time, onChanged, controller);
+              },
+              icon: Icon(Icons.access_time, color: AppColors.primaryColor), // Change icon color
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: AppColors.primaryColor), // Change focused border color
+            ),
+          ),
+          controller: controller,
+          readOnly: true,
         ),
       ),
-      controller: controller,
-      readOnly: true,
     );
   }
 
   Widget buildTextField(TextEditingController controller, String label) {
+    final inputFormatter = FilteringTextInputFormatter.allow(RegExp(r'^[0-9]*$'));
+
     return TextFormField(
       controller: controller,
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
+        labelStyle: TextStyle(color: AppColors.primaryColor),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: AppColors.primaryColor), // Change focused border color
+          borderSide: BorderSide(color: AppColors.primaryColor),
         ),
-        // Apply the custom text style here
-        // You can adjust the color and other properties as needed
-        // Example: TextStyle(color: Colors.blue)
-        // Example: TextStyle(color: Color(0xFFE57373))
-        // Example: TextStyle(color: Colors.red, fontSize: 16),
-        // Example: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-        // ...
-        // For changing text color, you can use the color property
-        // of the TextStyle class.
-        // For example: TextStyle(color: Colors.blue)
-        // ...
-        // Note: You can also set the text color via the style property
-        // of the TextFormField widget if needed.
-        // Example: style: TextStyle(color: Colors.blue),
-        // ...
       ),
       keyboardType: TextInputType.number,
+      inputFormatters: [inputFormatter],
     );
   }
 
