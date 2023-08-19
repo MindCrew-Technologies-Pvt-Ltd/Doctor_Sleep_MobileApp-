@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+
 import '../database_helper.dart';
 import 'sleep_data.dart';
 
@@ -327,11 +327,13 @@ DataColumn buildCustomDataColumn(String label) {
 }
 
 */
+import 'package:doctor_sleep/Screens/languages.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import for date formatting
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+
+
 import '../database_helper.dart';
 import 'sleep_data.dart';
 
@@ -380,7 +382,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.appbarSS),
+        title: Text(Languages.of(context)!.appbarSS),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -395,7 +397,7 @@ class _WeekelySheetState extends State<WeekelySheet> {
                 width: 370,
                 padding: EdgeInsets.all(20.0),
                 child: Text(
-                  Strings.textss,
+                  Languages.of(context)!.textss,
                   style: TextStyle(fontSize: 14),
                 ),
               ),
@@ -489,3 +491,4 @@ class _WeekelySheetState extends State<WeekelySheet> {
     return DateFormat('MMM dd, yyyy').format(date); // Customize the date format as needed
   }
 }
+

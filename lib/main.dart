@@ -1,36 +1,79 @@
 
 import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
-import 'Screens/home.dart';
-import 'Screens/localization_helper.dart';
-import 'constants/string.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'Screens/home.dart';
+
+import 'Screens/languages.dart';
+import 'Screens/local_constant.dart';
+import 'Screens/localizations_delegate.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+
 
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    var state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    getLocale().then((locale) {
+      setState(() {
+        _locale = locale;
+      });
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: const [
+      home: CenteredButtonPage(),
+      locale: _locale,
+      supportedLocales: [
+        Locale('en', ''),
+        Locale('de', ''),
+        Locale('da', ''),
+        Locale('fr', ''),
+      ],
+      localizationsDelegates: [
+        AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('en', ''), // English
-        Locale('de', ''), // Deutsch
-        Locale('da', ''), // Dansk
-        Locale('fr', ''), // Francais
-      ],
-
-      home: CenteredButtonPage(),
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale?.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales?.first;
+      },
     );
   }
 }
@@ -40,33 +83,39 @@ class CenteredButtonPage extends StatelessWidget {
 
   void showLanguageDialog(BuildContext context) {
 
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(Strings.getLocalized(context,"buttonmessage")),
+          title: Text(Languages.of(context)!.appbar),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              for (String language in languages)
+              for (int i = 0; i < languages.length; i++)
+              //for (String language in languages)
                 ListTile(
-                  title: Text(language),
+                  title: Text(languages[i]),
                   onTap: () async {
                     Navigator.pop(context);
-                    // Example of changing the language
-                    if(language == 'English'){
-                      changeLanguage('en');
-                    }
-                    else if(language == 'Deutsch'){
-                      changeLanguage('de');
-                    }
-                    else if(language == 'Dansk'){
-                      changeLanguage('da');
-                    }
-                    else if(language == 'Français'){
-                      changeLanguage('fr');
-                    }
-
+                    switch (i) {
+                      case 0:
+                        //MyApp.setLocale(context, Locale('en'));
+                        changeLanguage(context, 'en');
+                        break;
+                      case 1:
+                        //MyApp.setLocale(context, Locale('de'));
+                        changeLanguage(context, 'de');
+                        break;
+                      case 2:
+                       // MyApp.setLocale(context, Locale('da'));
+                        changeLanguage(context, 'da');
+                        break;
+                      case 3:
+                        //MyApp.setLocale(context, Locale('fr'));
+                        changeLanguage(context, 'fr');
+                        break;
+                    };
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -79,10 +128,7 @@ class CenteredButtonPage extends StatelessWidget {
       },
     );
   }
-  void changeLanguage(String newLanguageCode) {
-    LocalizationHelper.setLocale(newLanguageCode);
-    LocalizationHelper.initializeLocalization();
-  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,7 +178,7 @@ class CenteredButtonPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          Strings.language(context),
+                          Languages.of(context)!.language,
                           style: TextStyle(
                             fontSize: 0.04 * MediaQuery.of(context).size.height,
                             fontWeight: FontWeight.bold,
@@ -161,7 +207,7 @@ class CenteredButtonPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  Strings.title(context),
+                  Languages.of(context)!.title,
                   style: TextStyle(
                     fontSize: 0.05 * MediaQuery.of(context).size.height,
                     fontWeight: FontWeight.bold,
@@ -178,7 +224,7 @@ class CenteredButtonPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Text(
-                    Strings.docdev(context),
+                    Languages.of(context)!.docdev,
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 0.03 * MediaQuery.of(context).size.height,

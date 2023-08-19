@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../constants/color.dart';
+import 'languages.dart';
 
 class SleepDataEntryScreen extends StatefulWidget {
   @override
@@ -39,7 +40,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sleep Data Entry'),
+        title: Text(Languages.of(context)!.sleepdiary),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -50,7 +51,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
           children: [
             buildDateSelectionFormField(context),
             buildTimePickerFormField(
-              'Bed Time',
+              Languages.of(context)!.bedtime,
               selectedBedTime,
                   (time) {
                 print("Selected Bed Time: $time");
@@ -61,7 +62,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
               bedtimeController, // Pass the controller here
             ),
             buildTimePickerFormField(
-              'Wake Time',
+              Languages.of(context)!.waketime,
               selectedWakeTime,
                   (time) {
                 print("Selected wake Time: $time");
@@ -72,10 +73,10 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
               waketimeController, // Pass the controller here
             ),
 
-            buildTextField(sleepLatencyController, 'Time to fall asleep (Minutes)'),
-            buildTextField(numAwakeningsController, 'Number of Awakenings'),
-            buildTextField(avgLengthOfAwakeningController, 'Average Length of Awakening (minutes)'),
-            buildTextField(scoopsOfZenbevController, 'Scoops of Zenbev'),
+            buildTextField(sleepLatencyController, Languages.of(context)!.timetofallasleep),
+            buildTextField(numAwakeningsController, Languages.of(context)!.numberofawakenings),
+            buildTextField(avgLengthOfAwakeningController, Languages.of(context)!.averagelengthofawakenings),
+            buildTextField(scoopsOfZenbevController, Languages.of(context)!.scoopsofzenbev),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -200,7 +201,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
         _selectDate(context);
       },
       decoration: InputDecoration(
-        labelText: 'Selected Date',
+        labelText: Languages.of(context)!.selecteddate,
         labelStyle: TextStyle(color: AppColors.primaryColor), // Change label text color
         suffixIcon: IconButton(
           onPressed: () {

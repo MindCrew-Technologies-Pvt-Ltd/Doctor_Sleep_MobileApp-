@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+import 'languages.dart';
+
 
 class Acknowledgement extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.appbarA(context)),
+        title: Text(Languages.of(context)!.appbarA),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -25,7 +26,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
           children: [
             Center(
               child: Text(
-                Strings.citation(context),
+                Languages.of(context)!.citation,
                 style: TextStyle(
                   fontSize: 24,
                   // fontWeight: FontWeight.bold,
@@ -37,7 +38,7 @@ class _AcknowledgementState extends State<Acknowledgement> {
             Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20), // Add left and right padding
-                child: Text(Strings.textcitation(context),
+                child: Text(Languages.of(context)!.textcitation,
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.black,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+
 import '../database_helper.dart';
 import 'sleep_data.dart';
 
@@ -238,8 +238,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+
 import '../database_helper.dart';
+import 'languages.dart';
 import 'sleep_data.dart';
 
 class Graphs extends StatelessWidget {
@@ -268,7 +269,7 @@ class Graphs extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(Strings.appbargraph),
+              title: Text(Languages.of(context)!.appbargraph),
               backgroundColor: AppColors.primaryColor,
               centerTitle: true,
             ),
@@ -278,17 +279,17 @@ class Graphs extends StatelessWidget {
                 child: Column(
                   children: [
                     GraphBox(
-                      title: Strings.graph1title,
+                      title: Languages.of(context)!.graph1title,
                       child: SleepLatencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph2title,
+                      title: Languages.of(context)!.graph2title,
                       child: SleepEfficiencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph3title,
+                      title: Languages.of(context)!.graph3title,
                       child: TSTAndTIBScatterPlot(sortedSleepData),
                     ),
                   ],
