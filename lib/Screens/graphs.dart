@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+
 import '../database_helper.dart';
 import 'sleep_data.dart';
 
@@ -38,7 +38,7 @@ class Graphs extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text(
-                Strings.appbargraph,
+                Strings.appbargraph(context),
               ),
               backgroundColor: AppColors.primaryColor,
               centerTitle: true,
@@ -49,17 +49,17 @@ class Graphs extends StatelessWidget {
                 child: Column(
                   children: [
                     GraphBox(
-                      title: Strings.graph1title,
+                      title: Strings.graph1title(context),
                       child: SleepLatencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph2title,
+                      title: Strings.graph2title(context),
                       child: SleepEfficiencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph3title,
+                      title: Strings.graph3title(context),
                       child: TSTAndTIBScatterPlot(sortedSleepData),
                     ),
                   ],
@@ -238,8 +238,9 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../constants/color.dart';
-import '../constants/string.dart';
+
 import '../database_helper.dart';
+import 'languages.dart';
 import 'sleep_data.dart';
 
 class Graphs extends StatelessWidget {
@@ -254,7 +255,7 @@ class Graphs extends StatelessWidget {
           return Text('Error: ${snapshot.error}');
         } else {
           List<SleepData> sortedSleepData = snapshot.data!;
-          if (sortedSleepData.length == 1 || sortedSleepData.isEmpty) {
+          if (sortedSleepData.length < 3 || sortedSleepData.isEmpty) {
             return Center(
               child: Text(
                 'No Data Available',
@@ -268,7 +269,7 @@ class Graphs extends StatelessWidget {
 
           return Scaffold(
             appBar: AppBar(
-              title: Text(Strings.appbargraph),
+              title: Text(Languages.of(context)!.appbargraph),
               backgroundColor: AppColors.primaryColor,
               centerTitle: true,
             ),
@@ -278,17 +279,17 @@ class Graphs extends StatelessWidget {
                 child: Column(
                   children: [
                     GraphBox(
-                      title: Strings.graph1title,
+                      title: Languages.of(context)!.graph1title,
                       child: SleepLatencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph2title,
+                      title: Languages.of(context)!.graph2title,
                       child: SleepEfficiencyScatterPlot(sortedSleepData),
                     ),
                     SizedBox(height: 20),
                     GraphBox(
-                      title: Strings.graph3title,
+                      title: Languages.of(context)!.graph3title,
                       child: TSTAndTIBScatterPlot(sortedSleepData),
                     ),
                   ],
@@ -351,14 +352,11 @@ class SleepLatencyScatterPlot extends StatelessWidget {
         FlSpot(data.id!.toDouble(), data.sleepLatency!.toDouble()))
         .toList();
 
-    // Replace invalid values with a placeholder value
+    // Subtract the minimum x-axis value to start from zero
+    double minXValue = spots.first.x;
     spots = spots.map((spot) {
-      if (spot.y.isNaN || spot.y.isInfinite) {
-        return FlSpot(spot.x, 0); // Use 0 as a placeholder value
-      }
-      return spot;
+      return FlSpot(spot.x - minXValue, spot.y);
     }).toList();
-
     return Column(
       children: [
         AspectRatio(
@@ -378,7 +376,7 @@ class SleepLatencyScatterPlot extends StatelessWidget {
                   showTitles: true,
                   getTitles: (value) {
                     if (value % 1 == 0) {
-                      return value.toInt().toString();
+                      return (minXValue + value).toInt().toString(); // Use minXValue here
                     }
                     return '';
                   },
@@ -396,6 +394,8 @@ class SleepLatencyScatterPlot extends StatelessWidget {
   }
 }
 
+
+
 class SleepEfficiencyScatterPlot extends StatelessWidget {
   final List<SleepData> sortedSleepData;
 
@@ -407,10 +407,18 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
         .where((data) =>
     data.id != null &&
         data.sleepEfficiency != null &&
-        data.sleepEfficiency!.isFinite) // Filter out NaN or infinite values
+        data.sleepEfficiency!.isFinite)
         .map((data) =>
         FlSpot(data.id!.toDouble(), data.sleepEfficiency!.toDouble()))
         .toList();
+
+    // Handle invalid values (NaN or infinite) by replacing them with a placeholder value
+    spots = spots.map((spot) {
+      if (spot.y.isNaN || spot.y.isInfinite) {
+        return FlSpot(spot.x, 0); // Use 0 as a placeholder value
+      }
+      return spot;
+    }).toList();
 
     return Column(
       children: [
@@ -460,7 +468,8 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
         .where((data) =>
     data.id != null &&
         data.totalSleepTime != null &&
-        data.totalSleepTime!.isFinite) // Filter out NaN or infinite values
+        data.totalSleepTime!.isFinite &&
+        !data.totalSleepTime!.isNaN)
         .map((data) =>
         FlSpot(data.id!.toDouble(), data.totalSleepTime!.toDouble()))
         .toList();
@@ -469,9 +478,26 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
         .where((data) =>
     data.id != null &&
         data.timeInBed != null &&
-        data.timeInBed!.isFinite) // Filter out NaN or infinite values
-        .map((data) => FlSpot(data.id!.toDouble(), data.timeInBed!.toDouble()))
+        data.timeInBed!.isFinite &&
+        !data.timeInBed!.isNaN)
+        .map((data) =>
+        FlSpot(data.id!.toDouble(), data.timeInBed!.toDouble()))
         .toList();
+
+    // Handle invalid values (NaN or infinite) by replacing them with a placeholder value
+    totalSleepTimeSpots = totalSleepTimeSpots.map((spot) {
+      if (spot.y.isNaN || spot.y.isInfinite) {
+        return FlSpot(spot.x, 0); // Use 0 as a placeholder value
+      }
+      return spot;
+    }).toList();
+
+    timeInBedSpots = timeInBedSpots.map((spot) {
+      if (spot.y.isNaN || spot.y.isInfinite) {
+        return FlSpot(spot.x, 0); // Use 0 as a placeholder value
+      }
+      return spot;
+    }).toList();
 
     return Column(
       children: [
@@ -484,6 +510,7 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
                   spots: totalSleepTimeSpots,
                   isCurved: true,
                   dotData: FlDotData(show: true),
+                  colors: [Colors.red],
                 ),
                 LineChartBarData(
                   spots: timeInBedSpots,
@@ -507,6 +534,7 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
               ),
             ),
           ),
+
         ),
         const SizedBox(height: 10),
         Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
@@ -514,3 +542,4 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
     );
   }
 }
+

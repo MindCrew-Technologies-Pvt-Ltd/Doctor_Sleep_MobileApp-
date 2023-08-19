@@ -1,37 +1,79 @@
-import'package:doctor_sleep/constants/color.dart';
+
+import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
-import 'package:localization/localization.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'Screens/home.dart';
-import 'constants/string.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'Screens/home.dart';
+
+import 'Screens/languages.dart';
+import 'Screens/local_constant.dart';
+import 'Screens/localizations_delegate.dart';
+
+import 'package:url_launcher/url_launcher.dart';
+
 
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
+  static void setLocale(BuildContext context, Locale newLocale) {
+    var state = context.findAncestorStateOfType<_MyAppState>();
+    state?.setLocale(newLocale);
+  }
+
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    getLocale().then((locale) {
+      setState(() {
+        _locale = locale;
+      });
+    });
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-  LocalJsonLocalization.delegate.directories = ['lib/i18n'];
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: CenteredButtonPage(),
+      locale: _locale,
       supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('de', 'DE'), // Deutsch
-        // Add other supported locales
+        Locale('en', ''),
+        Locale('de', ''),
+        Locale('da', ''),
+        Locale('fr', ''),
       ],
       localizationsDelegates: [
-        // delegate from flutter_localization
+        AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
-        // delegate from localization package.
-        LocalJsonLocalization.delegate,
       ],
-      home: CenteredButtonPage(),
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale?.languageCode == locale?.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales?.first;
+      },
     );
   }
 }
@@ -39,22 +81,41 @@ class MyApp extends StatelessWidget {
 class CenteredButtonPage extends StatelessWidget {
   final List<String> languages = ['English', 'Deutsch', 'Dansk', 'Français'];
 
-  Future<void> showLanguageDialog(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+  void showLanguageDialog(BuildContext context) {
+
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(Strings.buttonmessage),
+          title: Text(Languages.of(context)!.appbar),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              for (String language in languages)
+              for (int i = 0; i < languages.length; i++)
+              //for (String language in languages)
                 ListTile(
-                  title: Text(language),
+                  title: Text(languages[i]),
                   onTap: () async {
-                  await prefs.setString('selectedLanguage', language);
                     Navigator.pop(context);
+                    switch (i) {
+                      case 0:
+                        //MyApp.setLocale(context, Locale('en'));
+                        changeLanguage(context, 'en');
+                        break;
+                      case 1:
+                        //MyApp.setLocale(context, Locale('de'));
+                        changeLanguage(context, 'de');
+                        break;
+                      case 2:
+                       // MyApp.setLocale(context, Locale('da'));
+                        changeLanguage(context, 'da');
+                        break;
+                      case 3:
+                        //MyApp.setLocale(context, Locale('fr'));
+                        changeLanguage(context, 'fr');
+                        break;
+                    };
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -117,7 +178,7 @@ class CenteredButtonPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          Strings.language,
+                          Languages.of(context)!.language,
                           style: TextStyle(
                             fontSize: 0.04 * MediaQuery.of(context).size.height,
                             fontWeight: FontWeight.bold,
@@ -146,7 +207,7 @@ class CenteredButtonPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  Strings.title,
+                  Languages.of(context)!.title,
                   style: TextStyle(
                     fontSize: 0.05 * MediaQuery.of(context).size.height,
                     fontWeight: FontWeight.bold,
@@ -163,7 +224,7 @@ class CenteredButtonPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Text(
-                    Strings.docdev,
+                    Languages.of(context)!.docdev,
                     style: TextStyle(
                       fontStyle: FontStyle.italic,
                       fontSize: 0.03 * MediaQuery.of(context).size.height,
@@ -175,7 +236,6 @@ class CenteredButtonPage extends StatelessWidget {
               ],
             ),
           ),
-
           Positioned(
             top: 0.05 * MediaQuery.of(context).size.height,
             right: 0.03 * MediaQuery.of(context).size.width,

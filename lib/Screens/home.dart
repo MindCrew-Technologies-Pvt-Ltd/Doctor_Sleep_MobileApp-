@@ -2,17 +2,18 @@ import 'package:doctor_sleep/Screens/sleep_dairy.dart';
 import 'package:doctor_sleep/Screens/sleepdiary.dart';
 import 'package:doctor_sleep/constants/color.dart';
 import 'package:flutter/material.dart';
-import '../constants/string.dart';
+
 import 'Daysummary.dart';
 import 'acknowledgement.dart';
 import 'graphs.dart';
+import 'languages.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Strings.Homepage),
+        title: Text(Languages.of(context)!.Homepage),
         backgroundColor: AppColors.primaryColor,
         centerTitle: true,
       ),
@@ -28,9 +29,9 @@ class HomeScreen extends StatelessWidget {
                 color: AppColors.primaryColor,
               ),
               child: Text(
-                Strings.cal,
+                Languages.of(context)!.cal,
                 style: TextStyle(
-                  fontSize: 23,
+                  fontSize: 21,
                 ),
               ),
             ),
@@ -43,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    Strings.Modernize,
+                    Languages.of(context)!.Modernize,
                     style: TextStyle(),
                     textAlign: TextAlign.start,
                   ),
@@ -51,11 +52,11 @@ class HomeScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircularContainerWithNumber(number: '1', text: Strings.tap1),
+                      CircularContainerWithNumber(number: '1', text: Languages.of(context)!.tap1),
                       SizedBox(height: 15), // Add spacing between the circular containers
-                      CircularContainerWithNumber(number: '2', text: Strings.tap2),
+                      CircularContainerWithNumber(number: '2', text: Languages.of(context)!.tap2),
                       SizedBox(height: 15),
-                      CircularContainerWithNumber(number: '3', text: Strings.tap3),
+                      CircularContainerWithNumber(number: '3', text: Languages.of(context)!.tap3),
                     ],
                   ),
                   SizedBox(height: 30), // Add spacing between circular container 3 and the button
@@ -68,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => SleepDataEntryScreen()),
                           );
                         },
-                        child: Text(Strings.sleepdiary),
+                        child: Text(Languages.of(context)!.sleepdiary),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
@@ -81,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => WeekelySheet()),
                           );// Add functionality for the new button
                         },
-                        child: Text(Strings.button2),
+                        child: Text(Languages.of(context)!.button2,),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
@@ -99,7 +100,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Graphs()),
                           );// Add functionality for New Button 2
                         },
-                        child: Text(Strings.button3),
+                        child: Text(Languages.of(context)!.button3),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
@@ -112,7 +113,7 @@ class HomeScreen extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => Acknowledgement()),
                           );
                         },
-                        child: Text(Strings.button4),
+                        child: Text(Languages.of(context)!.button4),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(AppColors.secondaryColor),
                         ),
