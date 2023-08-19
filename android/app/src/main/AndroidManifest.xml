@@ -2,8 +2,7 @@
     <application
         android:label="Zenbev Sleep Calculator Doctor-Developed"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon"
-        android:roundIcon="@mipmap/ic_launcher_round">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:exported="true"
