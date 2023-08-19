@@ -27,10 +27,10 @@ class LanguageDe extends Languages {
   String get mastersleep => "MEISTER SCHLAF-TAGEBUCH";
 
   @override
-  String get sleepdiary => "Schlaf-Tagebuch\n           eingeben";
+  String get sleepdiary => "Schlaf-Tagebuch\neingeben";
 
   @override
-  String get sleepappbar => "SCHLAF-TAGEBUCH EINGEBEN";
+  String get sleepappbar =>"SCHLAF-TAGEBUCH EINGEBEN";
 
   @override
   String get sleepdiarytime => "Geben Sie die Militärzeit ein (z. B. 23:30)";
@@ -43,25 +43,25 @@ class LanguageDe extends Languages {
 
   @override
   String get Modernize =>
-      "Modernisieren Sie lhre Schlaf-Tracking-Gewohnheiten\nmit dem von Ärzten entwickelten Zenbev-Schlafrechner";
+      "Modernisieren Sie lhre Schlaf-Tracking-\nGewohnheiten mit dem von Ärzten entwickelten\nZenbev-Schlafrechner";
 
   @override
-  String get tap1 => "Tippen Sie auf Schlaf-Tagebuch\neingeben,um sich zu registrieren\nund einen neuen Tag zu speichern.";
+  String get tap1 => "Tippen Sie auf Schlaf-\nTagebuch eingeben,um\nsich zu registrieren und\neinen neuen Tag zu speichern.";
 
   @override
-  String get tap2 => "Geben Sie Schlafdaten ein,\n während Sie fortschreiten.";
+  String get tap2 => "Geben Sie Schlafdaten\nein,während Sie fortschreiten.";
 
   @override
-  String get tap3 => "Verfolgen Sie Ihre\nSchlafgewohnheiten mit\ninformativen Grafiken.";
+  String get tap3 => "Verfolgen Sie Ihre\nSchlafgewohnheiten\nmit informativen Grafiken.";
 
   @override
-  String get button2 =>"         Tägliche\n    Zusammenfassung";
+  String get button2 =>"Tägliche\nZusammenfassung";
 
   @override
-  String get button3 => "        Grafiken       ";
+  String get button3 => "      Grafiken         ";
 
   @override
-  String get button4 =>  "        Anerkennung         ";
+  String get button4 =>  "       Anerkennung      ";
 
   @override
   String get appbarA => "ANERKENNUNGEN";
