@@ -132,4 +132,25 @@ class LanguageDe extends Languages {
 
   @override
   String get textcitation =>"Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
+
+  @override
+  String get BT => "EB";
+
+  @override
+  String get SL => "SE";
+
+  @override
+  String get AN => "AN";
+
+  @override
+  String get AL => "AL";
+
+
+  @override
+
+  String get WT => "AW";
+
+  @override
+
+  String get ZS => "SZ";
 }

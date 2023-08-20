@@ -133,11 +133,27 @@ class LanguageEn extends Languages {
   String get scoopsofzenbev => 'Scoops of ZenBev';
 
   @override
-
   String get textcitation =>"Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
 
+  @override
+  String get BT => "BT";
+
+  @override
+  String get SL => "SL";
+
+  @override
+  String get AN => "AN";
+
+  @override
+  String get AL => "AL";
 
 
+  @override
+  // TODO: implement WT
+  String get WT => "WT";
 
+  @override
+  // TODO: implement ZS
+  String get ZS => "ZS";
 }
 
