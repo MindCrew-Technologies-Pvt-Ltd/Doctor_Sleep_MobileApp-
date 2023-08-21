@@ -104,4 +104,29 @@ abstract class Languages {
 
   String get ZS;
 
+  String get SaveData;
+
+  String get ResetData;
+
+  String get Error;
+
+  String get CannotInsertSameDateDataAgain;
+
+  String get DataSavedSuccessfully;
+
+  String get Areyousureyouwanttodeleteallsaveddata;
+
+  String get NoDataAvailable;
+
+  String get PleaseEntertheData;
+
+  String get Yes;
+
+  String get No;
+
+  String get Days;
+
+  String get Ok;
+
+
 }

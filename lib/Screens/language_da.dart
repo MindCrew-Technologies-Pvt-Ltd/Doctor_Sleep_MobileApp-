@@ -146,10 +146,46 @@ class LanguageDa extends Languages {
   String get AL => "AL";
 
   @override
-  // TODO: implement WT
   String get WT => "AW";
 
   @override
-  // TODO: implement ZS
   String get ZS => "SZ";
+
+  @override
+  String get Areyousureyouwanttodeleteallsaveddata => "Er du sikker på, at du vil slette alle gemte data?";
+
+  @override
+  String get CannotInsertSameDateDataAgain =>"Kan ikke indsætte samme datodata igen";
+
+  @override
+  String get DataSavedSuccessfully => "Data blev gemt";
+
+  @override
+  String get Error => "Fejl";
+
+  @override
+  String get No => "Nej";
+
+  @override
+  String get NoDataAvailable => "Ingen tilgængelig data";
+
+  @override
+  String get PleaseEntertheData => "Indtast venligst data";
+
+  @override
+  String get ResetData => "Nulstil data";
+
+  @override
+  String get SaveData =>"Gem Data";
+
+  @override
+  String get Yes =>"Ja";
+
+  @override
+  // TODO: implement Days
+  String get Days => "dage";
+
+  @override
+  // TODO: implement Ok
+  String get Ok => "okay";
 }

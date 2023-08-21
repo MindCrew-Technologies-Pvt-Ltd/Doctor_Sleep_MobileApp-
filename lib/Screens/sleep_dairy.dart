@@ -92,7 +92,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor, // Change this color to your desired color
                   ),
-                  child: Text('Reset Data'),
+                  child: Text(Languages.of(context)!.ResetData),
                 ),
 
                 ElevatedButton(
@@ -107,14 +107,14 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Error'),
-                            content: Text('Please Enter the Data'),
+                            title: Text(Languages.of(context)!.Error),
+                            content: Text(Languages.of(context)!.PleaseEntertheData),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop(); // Close the dialog
                                 },
-                                child: Text('Ok'),
+                                child: Text(Languages.of(context)!.Ok),
                               ),
                             ],
                           );
@@ -131,8 +131,8 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Error'),
-                            content: Text('Cannot Insert Same Date Data Again.'),
+                            title: Text(Languages.of(context)!.Error),
+                            content: Text(Languages.of(context)!.CannotInsertSameDateDataAgain),
                             actions: [
                               TextButton(
                                 onPressed: () {
@@ -185,7 +185,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                     // Show a success SnackBar
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Data Saved Successfully'),
+                        content: Text(Languages.of(context)!.DataSavedSuccessfully),
                         duration: Duration(seconds: 2), // You can adjust the duration as needed
                       ),
                     );
@@ -195,7 +195,7 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor, // Change this color to your desired color
                   ),
-                  child: Text('Save Data'),
+                  child: Text(Languages.of(context)!.SaveData),
                 ),
 
 
@@ -280,21 +280,21 @@ class _SleepDataEntryScreenState extends State<SleepDataEntryScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Reset Data'),
-          content: Text('Are you sure you want to delete all saved data?'),
+          title: Text(Languages.of(context)!.ResetData),
+          content: Text(Languages.of(context)!.Areyousureyouwanttodeleteallsaveddata),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('No'),
+              child: Text(Languages.of(context)!.No),
             ),
             TextButton(
               onPressed: () async {
                 await database.resetData(); // Reset the data in the database
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Yes'),
+              child: Text(Languages.of(context)!.Yes),
             ),
           ],
         );

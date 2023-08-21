@@ -147,10 +147,45 @@ class LanguageFr extends Languages {
 
 
   @override
-  // TODO: implement WT
   String get WT =>"HT";
 
   @override
-  // TODO: implement ZS
   String get ZS => "SZ";
+
+  @override
+  String get Areyousureyouwanttodeleteallsaveddata => "Voulez-vous vraiment supprimer toutes les données enregistrées?";
+
+  @override
+  String get CannotInsertSameDateDataAgain => "Impossible d'insérer à nouveau les mêmes données de date";
+
+  @override
+  String get DataSavedSuccessfully => "Données enregistrées avec succès";
+
+  @override
+  String get Error => "Erreur";
+
+  @override
+  String get No => "Non";
+
+  @override
+  String get NoDataAvailable => "Pas de données disponibles";
+
+  @override
+  String get PleaseEntertheData => "Veuillez saisir les données";
+
+  @override
+  String get ResetData => "Réinitialiser les données";
+
+  @override
+  String get SaveData => "Enregistrer";
+
+  @override
+  String get Yes => "Oui";
+
+  @override
+  // TODO: implement Days
+  String get Days => "jours";
+
+  @override
+  String get Ok =>"d'accord";
 }

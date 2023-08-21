@@ -258,7 +258,7 @@ class Graphs extends StatelessWidget {
           if (sortedSleepData.length < 3 || sortedSleepData.isEmpty) {
             return Center(
               child: Text(
-                'No Data Available',
+                Languages.of(context)!.NoDataAvailable,
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white,
@@ -388,7 +388,7 @@ class SleepLatencyScatterPlot extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
+        Text(Languages.of(context)!.Days, style: TextStyle(fontSize: 18, color: Colors.black)),
       ],
     );
   }
@@ -451,7 +451,7 @@ class SleepEfficiencyScatterPlot extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10),
-        Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
+        Text(Languages.of(context)!.Days, style: TextStyle(fontSize: 18, color: Colors.black)),
       ],
     );
   }
@@ -537,7 +537,7 @@ class TSTAndTIBScatterPlot extends StatelessWidget {
 
         ),
         const SizedBox(height: 10),
-        Text('Days', style: TextStyle(fontSize: 18, color: Colors.black)),
+        Text(Languages.of(context)!.Days, style: TextStyle(fontSize: 18, color: Colors.black)),
       ],
     );
   }

@@ -153,4 +153,42 @@ class LanguageDe extends Languages {
   @override
 
   String get ZS => "SZ";
+
+  @override
+  String get Areyousureyouwanttodeleteallsaveddata => "Sind Sie sicher, dass Sie alle gespeicherten Daten löschen möchten?";
+
+  @override
+  String get CannotInsertSameDateDataAgain => "Die gleichen Datumsdaten können nicht erneut eingefügt werden";
+
+  @override
+  String get DataSavedSuccessfully => "Daten erfolgreich gespeichert";
+
+  @override
+  String get Error => "Fehler";
+
+  @override
+  String get No => "Nein";
+
+  @override
+  String get NoDataAvailable => "Keine Daten verfügbar";
+
+  @override
+  String get PleaseEntertheData => "Bitte geben Sie die Daten ein";
+
+  @override
+  String get ResetData => "Daten zurücksetzen";
+
+  @override
+  String get SaveData => "Daten Speichern";
+
+  @override
+  String get Yes => "Ja";
+
+  @override
+  // TODO: implement Days
+  String get Days =>"Tage";
+
+  @override
+  // TODO: implement Ok
+  String get Ok => "okay";
 }
