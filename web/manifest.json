@@ -1,0 +1,35 @@
+{
+    "name": "doctor_sleep",
+    "short_name": "doctor_sleep",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#hexcode",
+    "theme_color": "#hexcode",
+    "description": "A sleep app to measure all of your sleep data  Use Doctor’s Best Sleep App to measure all of your sleep data. Data security is ensured, as no information is uploaded anywhere! Features include sleep graphs, sleep latency calculator, total time in bed vs. total time asleep and diary functionalities. With a minimalistic design, the sleep calculator will be sure to provide deeper insight into your sleep patterns and tendencies",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
