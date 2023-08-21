@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 abstract class Languages {
   static Languages? of(BuildContext context) {
     return Localizations.of<Languages>(context, Languages);
@@ -90,5 +91,42 @@ abstract class Languages {
   String get averagelengthofawakenings;
 
   String get scoopsofzenbev;
+
+  String get BT;
+
+  String get SL;
+
+  String get AN;
+
+  String get AL;
+
+  String get WT;
+
+  String get ZS;
+
+  String get SaveData;
+
+  String get ResetData;
+
+  String get Error;
+
+  String get CannotInsertSameDateDataAgain;
+
+  String get DataSavedSuccessfully;
+
+  String get Areyousureyouwanttodeleteallsaveddata;
+
+  String get NoDataAvailable;
+
+  String get PleaseEntertheData;
+
+  String get Yes;
+
+  String get No;
+
+  String get Days;
+
+  String get Ok;
+
 
 }

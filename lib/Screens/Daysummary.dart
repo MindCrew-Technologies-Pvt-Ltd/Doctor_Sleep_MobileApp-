@@ -372,12 +372,12 @@ class _WeekelySheetState extends State<WeekelySheet> {
   @override
   Widget build(BuildContext context) {
     List<DataColumn> customColumns = [
-      buildCustomDataColumn('BT'),
-      buildCustomDataColumn('SL'),
-      buildCustomDataColumn('AN'),
-      buildCustomDataColumn('AL'),
-      buildCustomDataColumn('WT'),
-      buildCustomDataColumn('ZS'),
+      buildCustomDataColumn(Languages.of(context)!.BT),
+      buildCustomDataColumn(Languages.of(context)!.SL),
+      buildCustomDataColumn(Languages.of(context)!.AN),
+      buildCustomDataColumn(Languages.of(context)!.AL),
+      buildCustomDataColumn(Languages.of(context)!.WT),
+      buildCustomDataColumn(Languages.of(context)!.ZS),
     ];
 
     return Scaffold(

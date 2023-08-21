@@ -133,11 +133,65 @@ class LanguageEn extends Languages {
   String get scoopsofzenbev => 'Scoops of ZenBev';
 
   @override
-
   String get textcitation =>"Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
 
+  @override
+  String get BT => "BT";
+
+  @override
+  String get SL => "SL";
+
+  @override
+  String get AN => "AN";
+
+  @override
+  String get AL => "AL";
 
 
+  @override
 
+  String get WT => "WT";
+
+  @override
+
+  String get ZS => "ZS";
+
+  @override
+  String get Areyousureyouwanttodeleteallsaveddata => "Are you sure you want to delete all saved data?";
+
+  @override
+  String get CannotInsertSameDateDataAgain => "Cannot Insert Same Date Data Again.";
+
+  @override
+  String get DataSavedSuccessfully => "Data Saved Successfully";
+
+  @override
+  String get Error => "Error";
+
+  @override
+  String get No => "No";
+
+  @override
+  String get NoDataAvailable => "No Data Available";
+
+  @override
+  String get PleaseEntertheData => "Please Enter the Data";
+
+  @override
+  String get ResetData => "Reset Data";
+
+  @override
+  String get SaveData => "Save Data";
+
+  @override
+  String get Yes => "Yes";
+
+  @override
+  // TODO: implement Days
+  String get Days => "Days";
+
+  @override
+  // TODO: implement Ok
+  String get Ok => "Ok";
 }
 

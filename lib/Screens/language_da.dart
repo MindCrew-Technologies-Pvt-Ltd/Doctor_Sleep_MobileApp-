@@ -27,7 +27,7 @@ class LanguageDa extends Languages {
   String get mastersleep => "MESTER SØVN DAGBOG";
 
   @override
-  String get sleepdiary => "Indtast søvndagbog\n           her";
+  String get sleepdiary => "Indtast søvndagbog\n            her";
 
   @override
   String get sleepappbar => "INDTAST SØVNDAGBOG HER";
@@ -46,19 +46,19 @@ class LanguageDa extends Languages {
       "Moderniser dine søgesporingsvaner ved at bruge\nUdviklet af læger Zenbev Søvnberegner";
 
   @override
-  String get tap1 => "Tryk på Indtast søvndagbog her,\nfor at registrere og gemme en\nny dag.";
+  String get tap1 => "Tryk på Indtast søvndagbog\nher,for at registrere og\ngemme en ny dag.";
 
   @override
-  String get tap2 => "Indtast søvndata, mens du\nfremskridter.";
+  String get tap2 => "Indtast søvndata,\nmens du fremskridter.";
 
   @override
   String get tap3 => "Følg dine søvnevner\nmed informative grafer.";
 
   @override
-  String get button2 => "         Daglig\n    Sammenfatning";
+  String get button2 => "     Daglig\nSammenfatning  ";
 
   @override
-  String get button3 => "             Grafer            ";
+  String get button3 => "         Grafer                ";
 
   @override
   String get button4 => "      Anerkendelse   ";
@@ -130,8 +130,62 @@ class LanguageDa extends Languages {
   @override
   String get scoopsofzenbev => 'Skefulde ZenBev';
 
-
   @override
   String get textcitation => "Protein source tryptophan versus pharmaceutical\ngrade tryptophan as an efficacious treatment for\nchronic insomnia, Nutritional Neuroscience, 8:2,\n121-127, DOI: 10.1080/10284150500069561\n                                                                                                             Craig Hudson, Susan Patricia Hudson,Tracy Hecht,\nJoan MacKenzie";
 
+  @override
+  String get BT => "ST";
+
+  @override
+  String get SL => "SL";
+
+  @override
+  String get AN => "AN";
+
+  @override
+  String get AL => "AL";
+
+  @override
+  String get WT => "AW";
+
+  @override
+  String get ZS => "SZ";
+
+  @override
+  String get Areyousureyouwanttodeleteallsaveddata => "Er du sikker på, at du vil slette alle gemte data?";
+
+  @override
+  String get CannotInsertSameDateDataAgain =>"Kan ikke indsætte samme datodata igen";
+
+  @override
+  String get DataSavedSuccessfully => "Data blev gemt";
+
+  @override
+  String get Error => "Fejl";
+
+  @override
+  String get No => "Nej";
+
+  @override
+  String get NoDataAvailable => "Ingen tilgængelig data";
+
+  @override
+  String get PleaseEntertheData => "Indtast venligst data";
+
+  @override
+  String get ResetData => "Nulstil data";
+
+  @override
+  String get SaveData =>"Gem Data";
+
+  @override
+  String get Yes =>"Ja";
+
+  @override
+  // TODO: implement Days
+  String get Days => "dage";
+
+  @override
+  // TODO: implement Ok
+  String get Ok => "okay";
 }
