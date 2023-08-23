@@ -250,23 +250,47 @@ class Graphs extends StatelessWidget {
       future: SleepDataDatabase().getSortedSleepDataByDate(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(Languages.of(context)!.appbargraph),
+              backgroundColor: AppColors.primaryColor,
+              centerTitle: true,
+            ),
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(Languages.of(context)!.appbargraph),
+              backgroundColor: AppColors.primaryColor,
+              centerTitle: true,
+            ),
+            body: Center(
+              child: Text('Error: ${snapshot.error}'),
+            ),
+          );
         } else {
           List<SleepData> sortedSleepData = snapshot.data!;
           if (sortedSleepData.length < 3 || sortedSleepData.isEmpty) {
-            return Center(
-              child: Text(
-                Languages.of(context)!.NoDataAvailable,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
+            return Scaffold(
+              appBar: AppBar(
+                title: Text(Languages.of(context)!.appbargraph),
+                backgroundColor: AppColors.primaryColor,
+                centerTitle: true,
+              ),
+              body: Center(
+                child: Text(
+                  Languages.of(context)!.NoDataAvailable,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             );
           }
-
           return Scaffold(
             appBar: AppBar(
               title: Text(Languages.of(context)!.appbargraph),
