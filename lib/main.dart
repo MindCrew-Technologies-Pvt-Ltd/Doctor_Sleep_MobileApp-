@@ -10,9 +10,15 @@ import 'Screens/localizations_delegate.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 
-void main() {
+
+  void main() {
+    if (Platform.isIOS) {
+      debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+    }
   runApp(MyApp());
 }
 
