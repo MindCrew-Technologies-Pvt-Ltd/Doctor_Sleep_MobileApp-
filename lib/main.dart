@@ -16,9 +16,9 @@ import 'package:flutter/foundation.dart';
 
 
   void main() {
-    if (Platform.isIOS) {
+    /*if (Platform.isIOS) {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-    }
+    }*/
   runApp(MyApp());
 }
 
