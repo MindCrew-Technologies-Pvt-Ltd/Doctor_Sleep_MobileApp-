@@ -65,7 +65,7 @@ class SleepDataDatabase {
     }
   }
 
-  Future<void> resetData() async {
+  /*Future<void> resetData() async {
     try {
       final Database? db = await database;
 
@@ -79,7 +79,29 @@ class SleepDataDatabase {
     } catch (e) {
       print('Error resetting data: $e');
     }
+  }*/
+
+  Future<void> resetData() async {
+    try {
+      final Database? db = await database;
+
+      if (db == null) {
+        print('_database is null, cannot reset data.');
+        return;
+      }
+
+      // Delete all rows from the table
+      await db.delete('sleep_data');
+
+      // Reset the auto-increment primary key to 1
+      await db.execute('DELETE FROM sqlite_sequence WHERE name="sleep_data"');
+
+      print('Data reset successful.');
+    } catch (e) {
+      print('Error resetting data: $e');
+    }
   }
+
 
   Future<List<SleepData>> getSleepData() async {
     if (_database == null) {
