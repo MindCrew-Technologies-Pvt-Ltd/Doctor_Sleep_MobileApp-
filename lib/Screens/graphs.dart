@@ -127,7 +127,6 @@ class SleepLatencyScatterPlot extends StatelessWidget {
   final List<SleepData> sortedSleepData;
 
   SleepLatencyScatterPlot(this.sortedSleepData);
-
   @override
   Widget build(BuildContext context) {
     List<FlSpot> spots = sortedSleepData
